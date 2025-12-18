@@ -14,6 +14,10 @@ public with sharing class InvoiceTriggerHandler {
             } else if (Trigger.isUpdate) {
                 beforeUpdate(Trigger.new, Trigger.oldMap);
             }
+        } else if (Trigger.isAfter) {
+            if (Trigger.isUpdate) {
+                afterUpdate(Trigger.new, Trigger.oldMap);
+            }
         }
     }
 
@@ -38,6 +42,11 @@ public with sharing class InvoiceTriggerHandler {
             validateAmountNotNegative(inv);
             validateAccountRequiredWhenBecomingApproved(inv, oldInv);
         }
+    }
+
+    @TestVisible
+    private static void afterUpdate(List<Invoice__c> newList, Map<Id, Invoice__c> oldMap) {
+        InvoiceStatusChangeEventPublisher.publishFromAfterUpdate(newList, oldMap);
     }
 
     private static void validateAmountNotNegative(Invoice__c inv) {
