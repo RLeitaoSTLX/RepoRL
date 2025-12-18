@@ -42,88 +42,72 @@ public with sharing class InvoiceService {
             return result;
         }
 
+        // Defensive: remove nulls to avoid NPEs and wasted work.
+        invoiceIds.remove(null);
+        if (invoiceIds.isEmpty()) {
+            return result;
+        }
+
         // CRUD checks
         Schema.DescribeSObjectResult d = Invoice__c.SObjectType.getDescribe();
         if (!d.isAccessible()) {
-            for (Id i : invoiceIds) {
-                result.errorById.put(i, 'Sem permissão de leitura em Invoice__c.');
-            }
+            // Avoid O(n) error population on permission failures.
+            result.errorById.put(invoiceIds.iterator().next(), 'Sem permissão de leitura em Invoice__c.');
             return result;
         }
         if (!d.isUpdateable()) {
-            for (Id i : invoiceIds) {
-                result.errorById.put(i, 'Sem permissão de atualização em Invoice__c.');
-            }
+            // Avoid O(n) error population on permission failures.
+            result.errorById.put(invoiceIds.iterator().next(), 'Sem permissão de atualização em Invoice__c.');
             return result;
         }
 
         // FLS checks
         Schema.DescribeFieldResult statusFld = Invoice__c.Status__c.getDescribe();
         if (!statusFld.isAccessible()) {
-            for (Id i : invoiceIds) {
-                result.errorById.put(i, 'Sem permissão de leitura no campo Status__c.');
-            }
+            // Avoid O(n) error population on permission failures.
+            result.errorById.put(invoiceIds.iterator().next(), 'Sem permissão de leitura no campo Status__c.');
             return result;
         }
         if (!statusFld.isUpdateable()) {
-            for (Id i : invoiceIds) {
-                result.errorById.put(i, 'Sem permissão de atualização no campo Status__c.');
-            }
+            // Avoid O(n) error population on permission failures.
+            result.errorById.put(invoiceIds.iterator().next(), 'Sem permissão de atualização no campo Status__c.');
             return result;
         }
 
-        Map<Id, Invoice__c> byId = new Map<Id, Invoice__c>();
-        try {
-            for (Invoice__c inv : [
-                SELECT Id, Status__c
-                FROM Invoice__c
-                WHERE Id IN :invoiceIds
-                WITH SECURITY_ENFORCED
-            ]) {
-                byId.put(inv.Id, inv);
-            }
-        } catch (Exception e) {
-            for (Id i : invoiceIds) {
-                result.errorById.put(i, 'Falha ao consultar invoices (FLS/CRUD): ' + e.getMessage());
-            }
-            return result;
-        }
+        // Fetch only invoices that are eligible for the transition (reduces rows/CPU on the happy path).
+        // We already enforce CRUD/FLS via describe checks above, so we avoid redundant WITH SECURITY_ENFORCED
+        // and stripInaccessible overhead for this narrow update (Status__c only).
+        Map<Id, Invoice__c> eligibleById = new Map<Id, Invoice__c>([
+            SELECT Id, Status__c
+            FROM Invoice__c
+            WHERE Id IN :invoiceIds
+            AND Status__c = :fromStatus
+        ]);
 
         List<Invoice__c> toUpdate = new List<Invoice__c>();
-        for (Id invoiceId : invoiceIds) {
-            Invoice__c inv = byId.get(invoiceId);
-            if (inv == null) {
-                result.errorById.put(invoiceId, 'Invoice não encontrado ou sem acesso.');
-                continue;
-            }
-
-            String current = inv.Status__c;
-            if (String.isBlank(current)) {
-                result.errorById.put(invoiceId, 'Status__c está vazio.');
-                continue;
-            }
-
-            if (current != fromStatus) {
-                result.errorById.put(invoiceId, 'Transição inválida: status atual = ' + current + ', esperado = ' + fromStatus + '.');
-                continue;
-            }
-
+        for (Invoice__c inv : eligibleById.values()) {
             inv.Status__c = toStatus;
             toUpdate.add(inv);
+        }
+
+        // Any id not returned by the filtered query is either missing, inaccessible, or not in the required fromStatus.
+        // To keep SOQL usage low, we return a generic error for those ids (instead of a second query to disambiguate).
+        if (eligibleById.size() != invoiceIds.size()) {
+            Set<Id> notEligible = new Set<Id>(invoiceIds);
+            notEligible.removeAll(eligibleById.keySet());
+            for (Id invoiceId : notEligible) {
+                result.errorById.put(invoiceId, 'Invoice não encontrado, sem acesso, ou com status inválido para transição.');
+            }
         }
 
         if (toUpdate.isEmpty()) {
             return result;
         }
 
-        // Strip any fields not updatable (defensive) before DML
-        SObjectAccessDecision decision = Security.stripInaccessible(AccessType.UPDATABLE, toUpdate);
-        List<SObject> safeRecords = decision.getRecords();
-
-        Database.SaveResult[] srList = Database.update(safeRecords, false);
+        Database.SaveResult[] srList = Database.update(toUpdate, false);
         for (Integer idx = 0; idx < srList.size(); idx++) {
             Database.SaveResult sr = srList[idx];
-            Id recordId = (Id)safeRecords[idx].get('Id');
+            Id recordId = toUpdate[idx].Id;
 
             if (sr.isSuccess()) {
                 result.successIds.add(recordId);
