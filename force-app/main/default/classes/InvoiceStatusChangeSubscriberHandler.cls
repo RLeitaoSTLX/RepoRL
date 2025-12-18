@@ -5,9 +5,8 @@ public with sharing class InvoiceStatusChangeSubscriberHandler {
      * Bulk-safe subscriber for Invoice_Status_Change__e.
      *
      * Notes:
-     * - No per-event SOQL/DML.
-     * - Example implementation performs a single SOQL (optional) and no DML.
-     * - Extend this method to apply business side-effects.
+     * - No SOQL/DML here (keep platform-event trigger fast).
+     * - Work is offloaded to Queueable (and Batch fallback for very large volumes).
      */
     public static void handle(List<Invoice_Status_Change__e> events) {
         if (isRunning) {
@@ -19,7 +18,7 @@ public with sharing class InvoiceStatusChangeSubscriberHandler {
                 return;
             }
 
-            Set<Id> invoiceIds = new Set<Id>();
+            List<InvoiceStatusChangeQueueable.Change> changes = new List<InvoiceStatusChangeQueueable.Change>();
             for (Invoice_Status_Change__e evt : events) {
                 if (evt == null) {
                     continue;
@@ -30,34 +29,30 @@ public with sharing class InvoiceStatusChangeSubscriberHandler {
                 }
 
                 // InvoiceId__c may be Id or Text(18). Normalize safely.
+                Id invoiceId;
                 try {
-                    invoiceIds.add((Id)rawId);
+                    invoiceId = (Id)rawId;
                 } catch (Exception e) {
                     try {
-                        invoiceIds.add((Id)String.valueOf(rawId));
+                        invoiceId = (Id)String.valueOf(rawId);
                     } catch (Exception ignore) {
-                        // ignore invalid ids
+                        continue; // ignore invalid ids
                     }
                 }
+
+                InvoiceStatusChangeQueueable.Change c = new InvoiceStatusChangeQueueable.Change();
+                c.invoiceId = invoiceId;
+                c.oldStatus = (String)evt.get('OldStatus__c');
+                c.newStatus = (String)evt.get('NewStatus__c');
+                changes.add(c);
             }
 
-            if (invoiceIds.isEmpty()) {
+            if (changes.isEmpty()) {
                 return;
             }
 
-            // Optional single SOQL for downstream processing.
-            // Keep it narrow to remain CPU/row efficient.
-            Map<Id, Invoice__c> invoicesById = new Map<Id, Invoice__c>([
-                SELECT Id, Status__c
-                FROM Invoice__c
-                WHERE Id IN :invoiceIds
-            ]);
-
-            // Example: no-op. Put your side effects here using invoicesById.
-            // e.g., enqueue a Queueable per chunk, aggregate metrics, etc.
-            Integer touched = invoicesById.size();
-            touched++;
-            touched--;
+            // Offload work. Chunking avoids heap spikes and stays within queueable-per-tx limits.
+            InvoiceStatusChangeAsyncDispatcher.dispatch(changes);
         } finally {
             isRunning = false;
         }
