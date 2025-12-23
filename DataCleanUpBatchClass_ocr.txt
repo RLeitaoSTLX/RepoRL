@@ -1,0 +1,500 @@
+[PP wwwseccerecerercereccorecereeemennensenresensenne conte onreennteesernenneSenneeeneeGntee ent nnnteeeenneennSnnet Eteenes Content enneennt SOLS SEneGeneSeeeit
+Name: GEN_DataCleanUpBatchClass.cis
+Description: Batch class to delete sObject records for clean up purpose
+Date Version Author Summary of Changes
+Nov 2016 1.0 Swapnil Mane Intal Release||[PROJ-1619672_ BREQ-012
+Oct 2018 1.1 Pankaj Patkar PROJ-1834243_BREQ-053 - Delete reports not run for last 1 year
+Apr 2019 1.2 Pallavi Shewale SR-00361738 Added Static Variable isGEN_DataCleanUpBatchClassRunning
+80 that if its true the future method will not be called.
+Sep 2019 2.0 Harshad Bharsakle PROJ-1943021_BREQ-0017 - Changed logic to pickup object based on isSandbox and isProduction fields of custom settting instead of using number.
+introduced single object recurring mode option so it will run for a particular object until there are no records available for that object.
+Oct 2019 2.1 Harshad Bharsakle SR-00425996 - HyperCare SR fix.
+Dec 2019 2.2 Saumya Bajpai PROJ-1944918_ BREQ-017 | Added condition of Additional_Where_Clause_3__c in custom setting as well as in code
+Mar 2020 2.3 Divya Mahajan PROJ-2047175_BREQ-043)||Velocity | Customer Sites - Testing and Deployment Support(for February'20 BREQs)
+Dec 2020 2.4 Patil, Girraj PROJ-2055772_US-114||GDPR | Osta Privacy | Lead & Contact management | Individual Object
+Apr 2021 25 Patil, Giriraj PROJ-2159317_US-095|}GDPR | Data Privacy | Lead & Contact management | Legal Entity on INDIVIDUALS | DATAPACTH LEGAL ENTITY
+Nov 2021 2.6 Amit Bhosale PROJ-1620010_US-618]|Optimise-GEN_Data' UpBatchClass
+Feb 2023 3.0 Shivam Vishwakarma  US-ID_0007416 | DataCleanup Batch-ATA Request Entry Criteria change
+Mar 2023 3.1 Shivam Vishwakarma US-ID_0007466 | US | Deletion of Orphan records and Daily Clean up+Optimization of Deletion batch class(part 2)
+Oct 2023 3.2 Sri Sai US-ID_0011270 | Enhanced Domain-Static to Dynamic URL's
+Mar 2024 4.0 Shilpa US-ID_0013864|Apex Code Optimisation - Indentation - Beautification(Part 1 of 5)
+|
+/prettier-ignore
+lobal class GEN_DataCleanUpBatchClass implements Database.Batchable<sObject>, Database. AllowsCallouts, Database .Stateful{
+Sti query,
+HPROJ-1943021_BREQ-0017 - Harshad - Introduced new variables.
+integer sequence,
+Boolean isSandbox;
+Boolean isListEmpty;
+Boolean isRecurringObdject;
+integer DataCleanUpConfigName;
+integer defaultBatchSize=1;
+HPROJ-1943021_BREQ-0017 - end
+CSL_DataCleanUpConfig__c dataCleanUpCSznew CSL_DataCleanUpConfig__c{);
+gobal static Boolean isGEN_DataCleanUpBatchClassRunning{get:set;}
+apiVersion:
+String sessionid:
+integer count=0;
+integer initialBatchSize=0;
+List<sObject> sobjlist;
+HUS-ID_0007466
+integer batchGroupNumber.//Added a New fleid to segregate the Objects into multiple seperate groups via the Batch_Group_Number__c field in CSL_DataCleanUpConfig__c.
+foeceesee OS CALS HHS C8 HE HOS SESE A CENESE EOE HOOT EGS HOE COGS HEE GOES EGA TOOEESATS EEE SE TOK FOES SOA CORE HCA SS ESHA TELOOEASCATESOTOA
+* Author. Pankaj Patkar
+* Date: Oct 2018
+* Param: String
+* Retum: string
+* Description: Get session id to connect REST. For the BREQ # PROJ-1834243_BREQ-053 implementation
+BOOS 4 0698S OOS OO6 OE OS FOE CE EE ECE EDHE 4 OS FO EGOS £08 FOES HOE FOOD O94 UE SHHCEEDETOGS FOL TECH EOS Awe eseehvsesscsocevawsoon/
+public string getSessionid(){
+PtpCallounock mock=null;
+Uprettier-ignore
+ipreiorserorg ee atontiandier integrationConfigurationhandler=(HND_Integration_ConfigurationHandier)HND_HandlerFactory.getHandlerinstance(Integration_Configuration__c.sObjectType);
+rettier-ignore
+List<Integration_Configuration__c> integrationConfigurationList=integrationC onfigurationhandler.getintegrationConfigurationByName(new Set<String>{GEN_Constants.PDM_METADATASERVICE_AUTHENTICATION));
+CSH_PDM_Batch_Details__c PDMBatchDetails=CSH_PDM_Batch_Details__c.getOrgDefaults():
+# US-ID_0011270 Start
+String sfdcBaseURL=URL.getSalesforceBaseUri().toExternalForm();
+HitpRequest req=new HttpRequest();
+req.setEndpoint(sfdcBaseURL*+'/services/oauth2/token’);
+4 US-ID_0011270 End
+req.setMethod(GEN_Constants.POST_METHOD);
+req.setTimeout((Integer)PDOMBatchDetails. Timeout_Period__c);
+Tetra ee Pe applicabon/x-wnww- form-uniencoded'y
+Uprettier-ignore
+req.setBody(grant_type=password&client_id="+PDMBatchDetails.Consumer_Key__c+'&client_secret="+PDMBatchDetails. Consumer_Secret__c+'&username=’+integrationConfigurationList(0].username__c+'&password="+integrationConfigurationList{0}.Password__c);
+Http http=new Hitp();
+HitpResponse response=new HitpResponse();
+\n\n---- CHUNK ----\n\n
+req.setTimeout((Integer)PDOMBatchDetails. Timeout_Period__c);
+Tetra ee Pe applicabon/x-wnww- form-uniencoded'y
+Uprettier-ignore
+req.setBody(grant_type=password&client_id="+PDMBatchDetails.Consumer_Key__c+'&client_secret="+PDMBatchDetails. Consumer_Secret__c+'&username=’+integrationConfigurationList(0].username__c+'&password="+integrationConfigurationList{0}.Password__c);
+Http http=new Http();
+HttpResponse response=new HitpResponse();
+liprettier-ignore
+if(Test.isRunningTest())response.setBody({\"access_token\": \"access_token\"}’);
+else response=http.send(req);
+P Map<String,Object> mapBody=(Map<String, Object>)/JSON. deserialize Untyped(response.getBody()):
+if get the Session ID from the response from the call to oauth2/token
+system.debug(access ee esnap body gelaccess_token'))
+retum(String)mapBody.get(access_token’); *
+HPROJ-1620010_US-618||Optimise-GEN_DataCleanUpBatchClass
+String sessionID=";
+Hprettier-ignore
+i(response!=null&.Sresponse.getStatusCode()==200){
+“prettier-ignore
+Map<String,Object> mapBody=(Map<String, Object>) JSON. deserialize Untyped(response.getBody());
+session|D=(String)mapBody.get(‘access_token');
+_— sessioniD;
+Uprettier-ignore
+else{
+Uprettier-ignore
+Application Log_¢ logEntrynew Application_Log__c{Application__c="Datacleanup Batch job Exception’, Message__c*"Status = ‘+’Failed’+'Check Cleanup batch report deletion authentication error);
+insert logEntry;
+retum null;
+}
+}
+PPeeewseerveesasseseese nen reasseaseeeneeseeehes son CHAS Ned FOES ICA TOREROAEOET OES LON TEES LON SERS IUD ESETOTAUSHORASSATOES EOS
+* Author: Pankaj Patkar
+* Date: Oct 2018
+* Param: String
+* Retum: string
+~ Description: Get latest api version, For the BREQ # PROJ-1834243_BREQ-053 implementation
+public string getLatestAPEXAP IVersion{ }{
+Nprettier-ignore
+AggregateResutt apiVersion=([SELECT Max(ApiVersion)version FROM ApexClass};
+String str=String. valueOf(apiVersion.get(‘version’));
+—_ str.
+HPROJ-1943021_BREQ-0017 - Harshad - Changed the parameters for the constuctor.
+Uprettier-ignore
+ae GEN_DataCleanUpBatchClass(String DataCleanUpConfigitemName, integer DataCleanUpConfigitemNumber, Boolean isSingleObjectRunningMode, integer DataCleanUpBatchGroupNumber}{
+try:
+apiVersion=getLatestAPEXAPIVersion():
+HPROS-1943021_BREQ-0017 - Harshad - logic for single object recurring mode.
+isSandbox=(SELECT IsSandbox FROM Organization LIMIT 1).isSandbox;
+Hprettier-ignore
+d(string.isNotBlank(DataCleanUpConfigitemName)}{
+Nprettierignore
+for(CSL_DataCleanUpConfig__c csitem:CSL_DataCleanUpConfig__c.getAlll().values()}{
+IfSR-00425996 - Harshad Bharsakie
+fiprettier-ignore
+H{csttem. Object, AF _ Namo c=" DataCieanUpConfigitemNamed.&((isSandboxé&csltem Execute_On_Sandbox__c}||(isSandboxé&csttem.Execute_On_Production__c})
+DataCleanUpConfigitemNumber=integer.valueOf(csitem.name);
+break;
+}
+,’
+Uprettier-ignore
+List<CS_INT_CleanUp_Batch_Config__c> CS_DefaultValue=CS_INT_CleanUp_Batch_Config__c.getAll().values();
+‘prettier-ignore
+#(!CS_DefaultVaiue.isEmpty()i
+uf AOL 1620010 US SioOntinse GEN DasCeatineanGae
+HPROJ-1620010_US-618]|}Optimise-GEN_DataCleanUpBatchClass
+Nprettier-ignore
+if(DataCleanUpconfigitemNumber==18||DataCleanUpconfigitemNumber==19)
+fiprettier-ignore
+defaultBatchSize=integer.valueOf(CS_DefaultValue{0].Defautt_Batch_Size_Report__c);
+fiprettier-ignore
+else defauliBatchSizezintecer.valueOtiCS DefaultValuel0).Default Batch Size c):
+\n\n---- CHUNK ----\n\n
+Nprettier-ignore ee a ee
+if(DataCleanUpconfigitemNumber==18||DataCleanUpconfigltenNumber==19)
+{prettier-ignore
+defaultBatchSize=integer.valueOf(CS_DefaultValue{0].Defautt_Batch_Size_Report__c);
+fiprettier-ignore
+else defaultBatchSize=integer.valueOf(CS_DefaultValue[0).Default_Batch_Size__c);
+}
+DataCleanUpConfigName=DataCleanUpConfigitemNumber.
+sequence=DataCleanUpConfigitemNumber,
+isRecurring Object=isSingleObjectRunningMode;
+/US-ID_0007466
+Uprettier-ignore
+Teron Ror na eenUp Batch Groupumberien ik sDataCleenUpBatchGroupNumber>0}70etaCleanUpBaichGroupumber.mat/forly if its a valid Batch Group Number.assign it else keep as null to run all objects together(as is behavior before US-ID_0007466)
+rettier-ignore
+insieemee configSinglelttem=CSL_DataCleanUpConfig__c.getValues(string.valueOf(DataCleanUpConfigitemNumber));
+“ignore
+if((isSandbox&&configSingleltem.Execute_On_Sandbox__c)i|(!isSandbox&4&.configSingleitem.Execute_On_Production__c)){
+CSL_DataCleanUpConfig__c instanceOfDataCleanUpCS=new CSL_DataCleanUpConfig__c():
+dataCleanUpCS=configSingleltem:;
+instanceOfDataCleanUpCS=configSingleltem;
+String finalQuery, initQuery;
+Hprettier-ignore
+if(nstanceOfDataCleanUpCS.isActive__c}{
+‘hp System.debug(’Org Id Check?-—>User Org ID: ‘+Userinfo.getOrganizationid()+’Custom setting org id: '+instanceOfDataCleanUpCS.SFDC_Org_ID__c);
+rettier-ignore
+H{(instanceOWDataCleanUpCS.SFDC_Org_ID__c=snull)|\(instanceOfDataCleanUpCS.SFOC_Org_!D__cl="SinstanceOfDataCleanUpCS.SF DC_Org_ID__c=2Userinfo.getOrganizationid())
+Nprettier-ignore
+if(instanceOfDataCleanUpCS.Object_API_Name__cl=null){
+iiprettier-ignore
+if(String.isNotBlank(instanceOfDataCleanUpCS .Start_Query__c))
+fprettier-ignore
+initQueryzinstanceOfDataCleanUpCS.Start_Query__c+' ‘+instanceOfDataCleanUpCS.Object_AP|I_Name__c+’ where ';
+liprettier-ignore
+else inttQuery='select ID from ‘+instanceOfDataCleanUpCS.Object_API_Name__c+’ where ’,
+finalQuery=";
+Hprettier-ignore
+String strmarket.strCreatedBy, strCreatedByProfileName strdate, strisActive, str_LastModifiedByid,strL astmodifiedProfiename,strRecordTypeDeveloperName,strStartDate, strEndDate;
+Iiprettier-ignore
+Gl oretlonignee en UPCS- Markat_Fiek]_API_Neme__cf=nubstinstanceO DataCiesnUpCS Markel Valve__cl=w Mil
+rettier-ignore
+strmarketzinstanceOfDataCleanUpCS.Market_Field_AP|_Name_ c+’ = \"+instanceOfDataCleanUpCS.Market_Value__c+\' AND ';
+) finalQuery=finaiQuery*' ‘+strmarket;
+iiprettier-ignore
+iffinstanceOfDataCleanUpCS.CreatedByID__c!=null){
+iiprettier-ignore
+strCreatedBy='CreatedByid'+¢' = \"+instanceOfDataCleanUpCS.CreatedByiD__c+‘\’ AND *;
+pnetQuerysfinalcuery+ ‘+strCreatedBy;
+Hprettier-ignore
+if(instanceOfDataCleanUpCS.CreatedByProfileName__c!=null}
+fiprettier-ignore
+Profile pcz[SELECT id FROM Profile WHERE Name=:instanceOfDataCleanUpCS.CreatedByProfileName__c]:
+String pcid=pc.id;
+/iprettier-ignore
+strCreatedByProfieName="CreatedBy.Profileid '+' = \"+pcid¢’ AND ';
+finalQuery=finalQuery*’ ‘+strCreatedByProfileName;
+Yee:
+/iprettier-ignore
+if(instanceOfDataCleanUpCS. Date_Field_API_Name__c!=null&&instanceOfDataCleanUpCS. Date_Field_Function__c!=null&&(instanceOfDataCleanUpCS.Date_Field_Value__c!=null||instanceOfDataCleanUpCS.Offset_from_todays_date__c!=nullllinstanceOfDataCleanUpCS.Use_Today_s Date __c)}{
+/iprettier-ignore
+i{(instanceOfDetaCleanUpCS.Use_Today_s_Date__c)&SinstanceOfDataCieanUpCS.Ofisel_from_todays_date_c==null&SinstanceOfDataCleanUpCS.Date_Field_Value_c==null
+prettier-ignore
+strdate=instanceOfDataCleanUpCS.Date_Field_API_Name__c+instanceOfDataCleanUpCS.Date_Field_Function__c+’ '+system.today()+' AND *.
+finalQuery=finalQuery+' '+strdate;
+}
+lfprettier-ignore
+if(\(nstanceOfDataCleanUpCS.Use_Today_s Date__c)&&instanceOfDataCleanUpCS. Offset_from_todays_date__cl=null&&instanceOfDataCleanUpCS. Date_Fieid_Value__c==null){
+iiprettior-ignore , 7 oT , TO : ~ 7 ~~ ~
+strdate=instanceOfDataCleanUpCS.Date_Field_API_Name__ctinstanceOfDataCleanUpCS.Date_Field_Function__c+‘LAST_N_DAYS:’+instanceOfDataCleanUpCS. Offset_from_todays_date__c.round(System.RoundingMode.FLOOR)+' AND °.
+finalQuery=finalQuery+’ ‘+strdate;
+}
+\n\n---- CHUNK ----\n\n
+ee ee ee eee ed ee ee eg ee Fe ee ee ene ee ee Eee I ee eer are ee ee Ors Or CE Ee re a ted 0 Or re er aL
+iiprettior-ignore , 7 oT , TO : ~ 7 ~~ ~
+strdate=instanceOfDataCleanUpCS.Date_Field_API_Name__ctinstanceOfDataCleanUpCS.Date_Field_Function__c+‘LAST_N_DAYS:’+instanceOfDataCleanUpCS. Offset_from_todays_date__c.round(System.RoundingMode.FLOOR)+' AND °.
+finalQuery=finalQuery+’ ‘+strdate;
+}
+fiprettier-ignore
+if(\(instanceOfDataCleanUpCS.Use_Today_s Date__c)&&instanceOfDataCleanUpCS. Date_Field_Value__c!=null){
+Datetime myDT=instanceOfDataCleanUpCS Date_Field_Value__c:
+String myDate=myDT.format(yyyy-MM-dd\'TV'HH:mm:ss.SSSXXX’);
+Uprettier-ignore
+strdate=instanceOfDataCleanUpCS.Date_Field_AP|_Name__ctinstanceOfDateCleanUpCS.Date_Field_Function__c+myDate+’ AND ’;
+,inaiQuen=s inalQuery+’ ‘+strdate;
+}
+iiprettier-ignore
+if(instanceOfDataCleanUpCS.LastModifiedByld__cl=null}{
+ifpretier-gnore
+strLastModifiedByld="LastModdiedByid'+’ = \"+instanceOfDataCleanUpCS.LastModifiedByld__c+’ AND °.
+finalQuery=finalQuery*' ‘+strLastModifiedByid;
+iprettier-ignore
+if(instanceOfDataCleanUpCS. LastModifiedByProfileName__c!=null}{
+ifprettier-ignore
+Profile plz[SELECT id FROM Profile WHERE Namez:instanceOfDataCleanUpCS.LastModifiedByProfleName__c]:
+String plid=pl.id;
+fiprettier-ignore
+strLastmodifiedProfilename='LastModifiedBy.Profileld '+' = \"+plid+V' AND ';
+finalQuery=finalQuery*’ ’+strLastmodifiedProfilename;
+}
+iprettier-ignore
+if(instanceOfDataCleanUpCS.RecordTypeDeveloperName__cl=nullX
+Uprotber-ignore
+strRecordTypeDeveloperName='Record TypeDeveloperName'+’ = \"+instanceOfDataCleanUpCS.RecordTypeDeveloperName__c+'’ AND °:
+, finalQuery=finalQuery*' ‘+strRecordTypeDeveloperName:
+# PROJ-1620010_US-618||Optimise-GEN_DataCieanUpBatchCtass
+Hprettier-ignore
+if(instanceOfDataCleanUpCS.Start_Date__c!=null
+Datetime myDTzinstanceOfDataCleanUpCS.Start_Date__c;
+liprettier-ignore
+String bee —ela oesD s AN  ll
+strStartDate='CreatedDate >'+myStartDate+’ AND ';
+) finalQuery=finalQuery*’ ‘+strStartDate;
+HPROJ-1620010_US-618||Optimise-GEN_DataCleanUpBatchCiass
+ifprettier-ignore
+if(instanceOfDataCleanUpCS.End_Date__cf=null){
+Datetime myDT=instanceOfDataCleanUpCS.End_Date__c;
+String myEndDate=myDT.format(yyyy-MM-dd\'T\'HH:mm:ss\'2\"):
+strEndDate="CreatedDate <'+myEndDate+' AND ‘;
+jinmuer=inaiQuerys! *+strEndDate;
+Hprettier-ignore
+iffinstanceOfDataCleanUpCS.Additional_Where_Clause_1__ci=null)
+liprettier-ignore
+finalQuery=finalQuery*’ '+instanceOfDataCleanUpCS Additional_Where_Clause_1__ct’ AND °;
+iprettier-ignore
+if(instanceOfDataCleanUpCS Additional_Where_Clause_2__c!=null)
+Jiprettier-ignore
+finalQueryfinalQuery*' ‘+instanceOfDataCleanUpCS Additional_Where_Clause_2__ c+’ AND’;
+HPROJ-1944918_BREQ-017 - Added condition of additional clause 3.
+fprettier-ignore
+if(instanceOfDataCleanUpCS Additional_Where_Clause_3__cf=null{
+Jiprettier-ignore
+finaltQuery=finalQuery*' ‘+instanceOfDataCleanUpCS.Additional_Where_Clause_3__c+’ AND ‘;}
+finalQuery=finalQuery.removeEnd( AND ');
+intQuery cinitQuery+bnalQuery.
+; query=initQuery;
+}
+,
+Nprettier-ignore
+M(query2=null}{
+\n\n---- CHUNK ----\n\n
+)
+}
+,
+Nprettier-ignore
+if(query==null}{
+lprettier-ignore
+query='select ID from '+configSingleitem.Object_API_Name__c+" limit 0°;
+, dataCieanUpCS=null;}
+iprettier-ignore
+catch(Exception e)
+iprettier-ignore
+Application_Log__c logEntry=new Application_Log__c{Application__c="Datacleanup Batch job Exception’, Message__c="Status = '+'Failed’+' Please check whether SFDC_Org_!D__c, isActive__c and query formation is correct or not Please find following actual exception: '+e):
+throw e;
+1 PROJ-1620010_US-618||Optimise-GEN_DataCleanUpBatchClass Start
+private static void checkErrorsinResult(Database.DeleteResult]] resultList}{
+/ boolean isErrorOcurred=false;
+‘prettier-ignore
+ApplicationLog.createAppLogForf ailedRecordsinAppGuidance(resultList,'Gen_DataCleanUpBatch’,,Gen_DataCleanUpBatch’);
+4 return isErrorOcurred;
+i PROJ-1620010_US-618||Optimise-GEN_DataCleanUpBatchClass end
+Ht Start Method
+global Database.QueryLocator start(Database.BatchableContext BC)
+isListEmpty=tue;
+system.debug(">>>>>>2ndquery ‘+query);
+return Database.getQueryLocator(query);
+}
+i! Execute Logic
+global void execute(Database BatchableContext BC,List<sObject> scope)
+List<String> responseList=new List<String>();
+Uprettier-ignore
+i(scope!=nullS&!scope.isEmpty()}{
+11 PROJ-1620010_US-618]|Optimise-GEN_DataCleanUpBatchClass
+count++;
+i! Added for the BREQ # PROJ-1834243_BREQ-053 implementation - Start
+isGEN_DataCleanUpBatchClassRunning=true;
+“1 Capture Initial Batch Size.for use when invoking batch again
+HPROJ-2047175_BREQ-043 - START
+List<sObject> tstOrObjectToDelete=new List<sObject>();
+HPROJ-2047175_BREQ-043 - END
+Uprettier-ignore
+t(initialB atchSize==08.&isRecurring Object)initialBatchSize=scope.size();
+Hprettier-ignore
+else if(fisRecuringObject)initialBatchSize=defautBatchSize;
+string strAuthorization:
+isListEmpty=false;
+/prettier-ignore ;
+if(scope.getSObjectType()==Schema.Report.getS ObjectType()||scope. getSObjectType(}==Schema.Dashboard.getS ObjectType()){
+sessionid=getSession|d);
+Nprettier-ignore
+if(sessionID!2null&&sessioniD!=" ‘}
+Http http=new Hitp();
+HitpRequest request=new HttpRequest();
+fiprettier-ignore
+string strBaseURL=System.URL.getSalesforceBase URL ().toExternalForm().tolowercase();
+ifprettier-ignore
+string strObjectType=scope.getS ObjectType().getDescribe().get_abelPiural().tolowercase();
+fiprettier-ignore
+for(sObject tmpSobject:scope){
+Uprettier-ignore
+request. setEndpoint(strBaseURL +'/services/data/v'+apiVersion+'‘/analytics/+strObjectType+'/+tmpSobject.id);
+request.setMethod('DELETE’);
+strAuthorization= "Bearer ‘+sessionid;
+request.setHeader( ‘Authorization’ strAuthorization):
+request. setHeader('‘Content-Type', ‘application/json’);
+HttpResponse responsezhttp.send(request);
+# ~PROJ-1620010_US-618||Optimise-GEN_DataCleanUpBatchCiass start
+integer status=response.getStatusCode();
+Uprettier-ignore
+Hetatel=7Willetathiet=FnAay
+\n\n---- CHUNK ----\n\n
+ee ee ae re ee Fe rE BERRI ITE D gE FS rs Ce Is
+request. setHeader('‘Content-Type', ‘application/json’);
+HttpResponse responsezhttp.send(request);
+4 ~PROJ-1620010_US-618||Optimise-GEN_DataCleanUpBatchCiass start
+integer status=response.getStatusCode();
+Uprettier-ignore
+if(status!=200||status!=204)}{
+Hprettier-ignore
+String messageContent=response.getBody()+'Object Name:->'+strObject Type+’RecordiD:-->'+tmpSobject id;
+i! ApplicationLog.logEntry(Medium’,'Gen_DataCieanUp Batch Report’,,"Gen_DataCleanUp Batch Report’. messageContent);
+/prettier-ignore
+responseList.add(response.getBody()+'Object Name:-->'+strObjectType+'RecordID:-->'+tmpSobject.id);
+}
+}
+list<Application_Log__c> logEntries=new List<Application_Log___c>();
+{fprettier-ignore
+for(String errorResponse-responseList}{
+Uprettier-ignore
+Application_Log__c errorReportLog=new Application_Log__c(Application__c="Gen_DataCleanUpBatch_Report’ Message__c=errorResponse,Module__c=’Gen_DataCleanUpBatch’);
+logEntries.add(errorReportLog);
+heert tlogEntries;
+‘ isRecurringObject =false;
+; ifPROJ-1620010_US-6 18||Optimise-GEN_DataCleanUpBatchCiass end
+}
+/prettier-ignore
+else{
+HPROJ-2047175_BREQ-043 - START
+if Check if the Object type is Customer Site
+if(scope!=null&&scope.size()>0}{
+fiprettier-ignore
+i{(scope.getSObjectType()==Schema.Customer_Site__c.getSObjectType(){
+List<Customer_Site__c> csList=(List<Customer_Site__c>)scope;
+Uprettier-ignore
+for(Customer_Site__c csObject.cel ist
+i! Check if the Reason for re field ts not blank then delete the record
+Jiprettier-ignore
+; if(csObject.Reason_for_Failure__cl=nullistOfObjectToDelete.add(cs Object);
+Uprettier-ignore
+Database. DeleteResult{]] drList=Database.delete(|stOfObjectToDelete  faise);
+11 PROJ-1620010_US-618}|Optimise-GEN_DataCleanUpBatchClass
+; checkErrorsinResult(drList);
+HfPROJ-2047175_BREQ-043 - END
+ifPROJ-2055772_US-114-GOPR | Data Privacy | Lead & Contact management | Individual Object-Start
+i{(scope.getSObjectType()==Schema. individual.getSObjectType()){
+List<Individual> individualList=(List<Individual>)scope:
+for(Individual record:individuall ist)}{
+HPROS-2159317_US-095||Removed extra check
+IstOfObjectToDelete.add(record);
+)
+Ht System.debug(Total Orphan individuals records '+istOfObjectToDelete.size()):
+‘prettier-ignore
+Database.DeleteResult) WOotmse GEN, DeiacleanUpoauhiae
+HPROJ-1620010_US-618||Optimise-GEN_DataCleanUpBatchClass
+} checkE rrorsinResult(drList);
+fiprettier-ignore
+*TPROJ-2088772_US-114-GDPR | Data Privacy | Lead & Contact management | Individual Object-End
+1! Added for the BREQ # PROJ-1834243_BREQ-053 implementation - END
+Database.DeleteResult{] drList=Database.delete(scope, faise);
+11 PROJ-1620010_US-618}|Optimise-GEN_DataCleanUpBatchClass
+checkErrorsinResult(drList):
+}
+}
+|
+global void finish(Database.BatchableContext BC)
+Uprettier-ignore
+AsyncApexJob apexJobs=(SELECT Id,Status.NumberOfErrors, JobitemsProcessed, TotalJobitems FROM AsyncApexJob WHERE Id=:BC.getJobid()];
+\n\n---- CHUNK ----\n\n
+|
+global void finish(Database.BatchableContext BC)
+/prettier-ignore
+irate sono apexJobs=(SELECT Id,Status,NumberOfErrors, JobitemsProcessed, TotalJobitems FROM AsyncApexJob WHERE Id=:BC.getJobid()):
+rettier-ignore
+List<AsyncApexJob> apexJobStatusCheck=GEN_Utilities.checkBatchisRunning('Gen_DataCleanUpBatchClass’);
+Uprettier-ignore
+ppplication_Log_¢ logEntry=new Application_Log__c(Application__c='Datacleanup Batch job’ Message__c='Status = '+apexJobs.Status+’ NumberOfErrors = '¢apexJobs.NumberOfErrors+’ JobitemsProcessed = '+apexJobs.JobitemsProcessed*+’ TotalJobitems = '¢apexJobs. TotalJobitems);
+insert logEntry,
+liprettier-ignore
+t(dataCleanUpCS!=nullX
+Nprettier-ignore
+#(apexJobs.Status==GEN_Constants. ASYNC_JOBSTATUS_COMPLETED){
+dataCleanUpCS.Status__c=GEN_Constants. DATA_CLEANUP_SUCCESS;
+, Sma CleanUPCS Record Execution TineStamp__caCatetime.now{)i PROJ-1620010_US-618]|Optimise-GEN_DataCleanUpBatchCiass
+Uprettier-ignore
+else dataCleanUpCS.Status__c=GEN_Constants.DATA_CLEANUP_FAILED;
+if dataCleanUpCS.RecordExecutionTimeStamp__c=Datetime.now();
+yedate dataCleanUpCs;
+HPROJ-1943021_BREQ-0017 - Harshad Bharsakle - Retrigger logic for same object is batch is running on single object recurring mode.
+Uprettier-ignore
+#(initialB atchSize==0)nitialBatchSize=defaultBatchSize;
+Hiprettier-ignore
+if(DataCleanUpConfigName!=nul&&isRecurringObject){
+i! system.debug(‘isListEmpty="+ isListEmpty):
+Uprettier-ignore
+#(count==0 isListEmpty=false;
+TO Stegner ee omnesRunningt < §&4&isListEmpty&&!Test.isRunningTest()}{
+rettier-ignore
+K(apexJobStatusCheck.isEmpty()&&apexJobStatusCheck size()< 1&4isListEmpty&4!Test.isRunningTest()}{
+HGEN_DataCleanUpBatchClass genDataCleanUpBatchObj=new GEN_DataCleanUpBatchClass(” DataCleanUpConfigName, True);
+US 100007466 updated the parameters,in case of isRecurringObject- logic for same object is batch is running on single object recurring mode,we can pass null as batchGroupNumber.
+prettier-ignore
+GEN_DataCleanUpBatchClass genDataCleanUpBatchObj=new GEN_DataCleanUpBatchClass(", DataCleanUpConfigName, tue, null);
+database.executebatch(genDataCleanUpBatchObj, initialBatchSize);
+}
+} else{
+sequence=sequence +1;
+P US-ID_0007466,
+* added a Do while loop to increment the sequence counter until the sequence does not reach the next Custom setting record that has Batch_Group_Number__c=batchGroupNumber passed as parameter, if batchGroupNumber!=nuill
+ie to Pick Objects falling under the specific Batch Group=batchGroupNumber.
+Uprettier-ignore
+if(batchGroupNumber!=null{
+Nprettier-ignore
+do{sequence=sequence+1:)
+liprettier-ignore
+, le(CSL_DataCleanUpConfg__<-getinstance( Sting valueOf(sequence)}!snukB&CSL._DataGleanUpConfid__c.getinsiance(Sting.valueOR'sequence)).Baich_Group_Number__cisbatchGroupNumberéSsequence<=CS\._DstaCleanlpConfia__¢.getAW().size())
+Nprettier-ignore
+else sequence=sequence+1;/Keeping existing functionality as well
+il System.debug(Sequence-—>‘+sequence);
+i PROJ-1620010_US-618||Optimise-GEN_DataCleanUpBatchClass added *&&isEmpty”
+Uprettier-ignore
+W(sequence<=CSL_DataCleanUpConfig__c.getAll{).size()\{
+Hy if(GEN_Utilities.getNumberOfBatchesRunning()< 5&&!Test.isRunningTest())
+/iprettier-ignore
+HlapexJobStatusCheck isEmpty()&apexJobStatusCheck size()<1 HeUS-(D 0007466 zomoving& Test isRunning Test()é adding it before database.executebatch call.
+HGEN_DataCleanUpBatchClass genDataCleanUpBatchObj=new GEN_DataCleanUpBatchClass(" sequence, false);
+CSL_DataCleanUpConfig__c sequence_CS_Record=CSL_DataCleanUpConfig__c.getinstance( String. valueOf(sequence));//Added as part of US-ID_0007416
+GEN_DataCleanUpBatchClass genDataCleanUpBatchObjznew GEN_DataCleanUpBatchClass(".sequence, false, batchGroupNumber);//US-ID_0007466, added BatchGroupNumber parameter
+ifSystem.debug(initialB atchsize--->'+initialBatchSize);
+fiprettier-ignore
+if(sequence==18||sequence==19)nitialBatchSize=90;
+fiprettier-ignore
+etse if(sequence_CS_ Record.Custom_Batch_Size__c!=null&&sequence_CS_Record.Custom_Batch_Size__cl=0&&sequence_CS_Record.Custom_Batch_Size__c>0}{
+Pf US-4ID_0007416 - DataCleanup Batch-ATA Request Entry Criteria change
+“ Added Custom Batch Size criteria to run Data CleanUp Batch with a Reduced Batch size when the Custom_Batch_Size__c field contains a value
+* Initially added for ATA_Request_Tracking(24,25,26)& ATA_Request_Entry(27)
+* tc avaid hatch failure with raaeon ae intarnal Saleactorce Error in lanes - Raseon for Error Hich Quary Coet caueina Query running tao long error °/
+\n\n---- CHUNK ----\n\n
+iadadh Ynctiaatlien beeninaticlic eatin ed ind | ewe we Cw ——— SERGE ree Be ee
+fiprettier-ignore
+etse if(sequence_CS_ Record.Custom_Batch_Size__c!=null&&sequence_CS_Record.Custom_Batch_Size__cl=0&&sequence_CS_Record.Custom_Batch_Size__c>0}{
+Pf US-4ID_0007416 - DataCleanup Batch-ATA Request Entry Criteria change
+“ Added Custom Batch Size criteria to run Data CleanUp Batch with a Reduced Batch size when the Custom_Batch_Size__c field contains a value
+* Initially added for ATA_Request_Tracking(24,25,26)& ATA_Request_Entry(27)
+* to avoid batch failure with reason as Internal Salesforce Error in logs - Reason for Error. High Query Cost causing Query running too long error °/
+Uprettier-ignore
+, initialBatchSize=integer.valueOf(sequence_CS_Record.Custom_Batch_Size__c);
+liprettier-ignore
+else initiaiBatchSize=genDataCleanUpBatchObd).defaultBatchSize;
+fiprettier-ignore
+1 AiTest.fsRunning Test() database executebaich{genDataCleanUpBatchOb).inikalGatchSize}:/US-ID_0007458:adding it before database.executebatch call.
+}
+}
+\n\n---- CHUNK ----\n\n
