@@ -1,0 +1,51 @@
+<template>
+    <lightning-card title="Invoices" icon-name="standard:invoice">
+        <div class="slds-p-horizontal_small slds-p-top_small">
+            <div class="slds-grid slds-wrap slds-gutters">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12">
+                    <lightning-combobox
+                        name="statusFilter"
+                        label="Filter by Status"
+                        value={statusFilter}
+                        options={statusOptions}
+                        onchange={handleStatusChange}
+                    >
+                    </lightning-combobox>
+                </div>
+
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12 slds-text-align_right slds-m-top_large">
+                    <lightning-button
+                        label="Submit Selected"
+                        variant="brand"
+                        onclick={handleSubmitSelected}
+                        disabled={isSubmitDisabled}
+                    >
+                    </lightning-button>
+                </div>
+            </div>
+
+            <template if:true={isLoading}>
+                <div class="slds-m-top_medium">
+                    <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                </div>
+            </template>
+
+            <div class="slds-m-top_medium">
+                <lightning-datatable
+                    key-field="Id"
+                    data={rows}
+                    columns={columns}
+                    onrowselection={handleRowSelection}
+                    selected-rows={selectedRowIds}
+                    hide-checkbox-column={false}
+                >
+                </lightning-datatable>
+            </div>
+
+            <div class="slds-m-top_small slds-text-color_weak">
+                Selected: {selectedCount}
+            </div>
+        </div>
+    </lightning-card>
+</template>
+
