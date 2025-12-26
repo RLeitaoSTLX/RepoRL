@@ -1,4 +1,4 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
@@ -51,6 +51,9 @@ export default class InvoiceTable extends LightningElement {
     wiredInvoices(result) {
         this.wiredInvoicesResult = result;
         const { data, error } = result;
+
+        // Wire w/ cacheable Apex: show spinner while first load/refresh is pending
+        this.isLoading = !data && !error;
 
         if (data) {
             this.rows = data;
