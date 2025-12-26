@@ -11,20 +11,28 @@ import submitInvoices from '@salesforce/apex/InvoiceTableController.submitInvoic
 import { getObjectInfo, getPicklistValues } from 'lightning/uiObjectInfoApi';
 
 const ALL_VALUE = '__ALL__';
+const COLUMNS = [
+    { label: 'Name', fieldName: 'Name', type: 'text' },
+    { label: 'Amount', fieldName: 'Amount__c', type: 'currency' },
+    { label: 'Status', fieldName: 'Status__c', type: 'text' }
+];
+const DEFAULT_STATUS_OPTIONS = [{ label: 'All', value: ALL_VALUE }];
 
 export default class InvoiceTable extends LightningElement {
-    columns = [
-        { label: 'Name', fieldName: 'Name', type: 'text' },
-        { label: 'Amount', fieldName: 'Amount__c', type: 'currency' },
-        { label: 'Status', fieldName: 'Status__c', type: 'text' }
-    ];
+    columns = COLUMNS;
 
     statusFilter = ALL_VALUE;
-    statusOptions = [{ label: 'All', value: ALL_VALUE }];
+    statusOptions = DEFAULT_STATUS_OPTIONS;
 
     rows = [];
     selectedRowIds = [];
-    isLoading = false;
+
+    // Split loading states to avoid wire overriding submit/refresh spinner state.
+    isWiring = true;
+    isSubmitting = false;
+    isRefreshing = false;
+
+    lastInvoicesErrorMessage;
 
     wiredInvoicesResult;
 
@@ -38,12 +46,12 @@ export default class InvoiceTable extends LightningElement {
     wiredStatusValues({ data, error }) {
         if (data) {
             this.statusOptions = [
-                { label: 'All', value: ALL_VALUE },
+                ...DEFAULT_STATUS_OPTIONS,
                 ...data.values.map((v) => ({ label: v.label, value: v.value }))
             ];
         } else if (error) {
             // Fall back to just "All" (still functional)
-            this.statusOptions = [{ label: 'All', value: ALL_VALUE }];
+            this.statusOptions = DEFAULT_STATUS_OPTIONS;
         }
     }
 
@@ -52,20 +60,14 @@ export default class InvoiceTable extends LightningElement {
         this.wiredInvoicesResult = result;
         const { data, error } = result;
 
-        // Wire w/ cacheable Apex: show spinner while first load/refresh is pending
-        this.isLoading = !data && !error;
-
         if (data) {
             this.rows = data;
+            this.isWiring = false;
+            this.lastInvoicesErrorMessage = undefined;
         } else if (error) {
             this.rows = [];
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Error loading invoices',
-                    message: this.reduceError(error),
-                    variant: 'error'
-                })
-            );
+            this.isWiring = false;
+            this.toastInvoicesLoadErrorOnce(error);
         }
     }
 
@@ -77,11 +79,16 @@ export default class InvoiceTable extends LightningElement {
         return this.selectedRowIds.length;
     }
 
+    get isLoading() {
+        return this.isWiring || this.isSubmitting || this.isRefreshing;
+    }
+
     get isSubmitDisabled() {
         return this.selectedRowIds.length === 0 || this.isLoading;
     }
 
     handleStatusChange(event) {
+        this.isWiring = true;
         this.statusFilter = event.detail.value;
         this.selectedRowIds = [];
     }
@@ -94,7 +101,7 @@ export default class InvoiceTable extends LightningElement {
     async handleSubmitSelected() {
         if (this.selectedRowIds.length === 0) return;
 
-        this.isLoading = true;
+        this.isSubmitting = true;
         try {
             await submitInvoices({ invoiceIds: this.selectedRowIds });
 
@@ -107,6 +114,7 @@ export default class InvoiceTable extends LightningElement {
             );
 
             this.selectedRowIds = [];
+            this.isRefreshing = true;
             await refreshApex(this.wiredInvoicesResult);
         } catch (e) {
             this.dispatchEvent(
@@ -117,8 +125,23 @@ export default class InvoiceTable extends LightningElement {
                 })
             );
         } finally {
-            this.isLoading = false;
+            this.isRefreshing = false;
+            this.isSubmitting = false;
         }
+    }
+
+    toastInvoicesLoadErrorOnce(error) {
+        const message = this.reduceError(error);
+        if (message && message === this.lastInvoicesErrorMessage) return;
+        this.lastInvoicesErrorMessage = message;
+
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: 'Error loading invoices',
+                message,
+                variant: 'error'
+            })
+        );
     }
 
     reduceError(error) {
