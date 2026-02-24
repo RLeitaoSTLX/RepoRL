@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Account_Compact_Layout</fullName>
+    <fields>Account_Name_with_Name2__c</fields>
+    <fields>SAPGlobalCustomerID__c</fields>
+    <fields>APBNumber__c</fields>
+    <fields>ParentId</fields>
+    <fields>State__c</fields>
+    <fields>cgcloud__Account_Email__c</fields>
+    <fields>ShippingAddress</fields>
+    <label>Account Compact Layout</label>
+</CompactLayout>

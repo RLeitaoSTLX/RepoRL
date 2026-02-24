@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VisitFrequency__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>SISO Visit frequency</label>
+    <lookupFilter>
+        <active>true</active>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <filterItems>
+            <field>VisitFrequency__c.VisitType__c</field>
+            <operation>equals</operation>
+            <value>SISO</value>
+        </filterItems>
+        <filterItems>
+            <field>VisitFrequency__c.DoNotVisit__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>VisitFrequency__c</referenceTo>
+    <relationshipLabel>Accounts</relationshipLabel>
+    <relationshipName>Accounts</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>cgcloud__Only_One_Extension</fullName>
+    <active>true</active>
+    <errorConditionFormula>cgcloud__Number_Of_Extensions__c &gt; 1</errorConditionFormula>
+    <errorMessage>You must add a maximum of one extension record to the Customer.</errorMessage>
+</ValidationRule>

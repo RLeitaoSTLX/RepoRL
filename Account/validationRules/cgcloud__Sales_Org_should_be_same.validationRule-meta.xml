@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>cgcloud__Sales_Org_should_be_same</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT(ISBLANK( ParentId )),  Parent.cgcloud__Sales_Org__c &lt;&gt; TEXT(cgcloud__Account_Template__r.cgcloud__Sales_Org__c))</errorConditionFormula>
+    <errorMessage>The Parent Customer and the Customer Template must have the same Sales Org.</errorMessage>
+</ValidationRule>

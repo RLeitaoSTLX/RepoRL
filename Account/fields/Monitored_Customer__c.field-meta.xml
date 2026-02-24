@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Monitored_Customer__c</fullName>
+    <defaultValue>false</defaultValue>
+    <inlineHelpText>Monitor this customer&apos;s activities - all orders must be approved by AM.</inlineHelpText>
+    <label>Monitored Customer</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

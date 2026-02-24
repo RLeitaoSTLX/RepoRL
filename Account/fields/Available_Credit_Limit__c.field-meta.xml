@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Available_Credit_Limit__c</fullName>
+    <description>Shows how much credit the customer still has available.</description>
+    <formula>IF(
+    ISBLANK(Consumed_Credit_Limit__c) || ISNULL(Consumed_Credit_Limit__c),
+    Credit_Limit__c,
+    Credit_Limit__c - Consumed_Credit_Limit__c
+)</formula>
+    <inlineHelpText>Shows how much credit the customer still has available.</inlineHelpText>
+    <label>Available Credit Limit</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <type>Currency</type>
+</CustomField>

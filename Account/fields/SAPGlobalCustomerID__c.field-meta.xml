@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SAPGlobalCustomerID__c</fullName>
+    <externalId>false</externalId>
+    <formula>RIGHT(cgcloud__ExternalId__c,(LEN(cgcloud__ExternalId__c) - FIND(&quot;_&quot;, cgcloud__ExternalId__c)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>SAP Global Customer ID</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

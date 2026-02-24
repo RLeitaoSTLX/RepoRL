@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DeliveryBlock__c</fullName>
+    <label>Delivery Block</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>96</fullName>
+                <default>false</default>
+                <label>Annual Deact. Review</label>
+            </value>
+            <value>
+                <fullName>97</fullName>
+                <default>false</default>
+                <label>Min order val blk</label>
+            </value>
+            <value>
+                <fullName>98</fullName>
+                <default>false</default>
+                <label>Tr. Ord. Bl. (temp.)</label>
+            </value>
+            <value>
+                <fullName>99</fullName>
+                <default>false</default>
+                <label>General Block</label>
+            </value>
+            <value>
+                <fullName>Z1</fullName>
+                <default>false</default>
+                <label>Gen Block w. confirm</label>
+            </value>
+            <value>
+                <fullName>Z2</fullName>
+                <default>false</default>
+                <label>RX Allocations</label>
+            </value>
+            <value>
+                <fullName>ZC</fullName>
+                <default>false</default>
+                <label>Transfer Order Block</label>
+            </value>
+            <value>
+                <fullName>ZE</fullName>
+                <default>false</default>
+                <label>Delivery block EDI</label>
+            </value>
+            <value>
+                <fullName>ZF</fullName>
+                <default>false</default>
+                <label>Delivery block PGI</label>
+            </value>
+            <value>
+                <fullName>ZI</fullName>
+                <default>false</default>
+                <label>Insolvent Block</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

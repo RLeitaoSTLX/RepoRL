@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>cgcloud__NewThisWeek</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>SAPGlobalCustomerID__c</columns>
+    <columns>APBNumber__c</columns>
+    <columns>ABCClass__c</columns>
+    <columns>State__c</columns>
+    <columns>ACCOUNT.ADDRESS2_CITY</columns>
+    <columns>ACCOUNT.ADDRESS2_ZIP</columns>
+    <columns>ACCOUNT.PHONE1</columns>
+    <columns>OwnerName__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ACCOUNT.CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>THIS_WEEK</value>
+    </filters>
+    <label>New This Week</label>
+</ListView>

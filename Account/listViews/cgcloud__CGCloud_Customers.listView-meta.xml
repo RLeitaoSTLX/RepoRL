@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>cgcloud__CGCloud_Customers</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>SAPGlobalCustomerID__c</columns>
+    <columns>APBNumber__c</columns>
+    <columns>ABCClass__c</columns>
+    <columns>State__c</columns>
+    <columns>VisitPerformance__c</columns>
+    <columns>ACCOUNT.ADDRESS2_CITY</columns>
+    <columns>ACCOUNT.ADDRESS2_ZIP</columns>
+    <columns>ACCOUNT.PHONE1</columns>
+    <columns>OwnerName__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ACCOUNT.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Account.cgcloud__Customer</value>
+    </filters>
+    <label>CGCloud Customers</label>
+    <language>en_US</language>
+</ListView>

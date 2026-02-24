@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CustStat02__c</fullName>
+    <description>Customer Price Group, SAP data.</description>
+    <label>Cust Stat 02</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>CustomerPriceGroup</valueSetName>
+    </valueSet>
+</CustomField>

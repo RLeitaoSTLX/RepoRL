@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DoNotVisit__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Should not visit if this is checked</description>
+    <label>Do Not Visit</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

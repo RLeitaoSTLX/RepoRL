@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Industry_Code_1__c</fullName>
+    <label>Industry Code 1</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>HYBRID</fullName>
+                <default>false</default>
+                <label>HYBRID</label>
+            </value>
+            <value>
+                <fullName>IND PHARMA</fullName>
+                <default>false</default>
+                <label>IND PHARMA</label>
+            </value>
+            <value>
+                <fullName>WHOLESALER</fullName>
+                <default>false</default>
+                <label>WHOLESALER</label>
+            </value>
+            <value>
+                <fullName>PROFESSIONAL MEDICAL SERVICES</fullName>
+                <default>false</default>
+                <label>PROFESSIONAL MEDICAL SERVICES</label>
+            </value>
+            <value>
+                <fullName>MARKETPLACES + E-DISCOUNTERS</fullName>
+                <default>false</default>
+                <label>MARKETPLACES + E-DISCOUNTERS</label>
+            </value>
+            <value>
+                <fullName>E-PHARMA + BRICK &amp; CLICKS</fullName>
+                <default>false</default>
+                <label>E-PHARMA + BRICK &amp; CLICKS</label>
+            </value>
+            <value>
+                <fullName>PARAPHARMACY CHAINS</fullName>
+                <default>false</default>
+                <label>PARAPHARMACY CHAINS</label>
+            </value>
+            <value>
+                <fullName>MASS MARKET</fullName>
+                <default>false</default>
+                <label>MASS MARKET</label>
+            </value>
+            <value>
+                <fullName>DISCOUNTERS</fullName>
+                <default>false</default>
+                <label>DISCOUNTERS</label>
+            </value>
+            <value>
+                <fullName>OTHER</fullName>
+                <default>false</default>
+                <label>OTHER</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

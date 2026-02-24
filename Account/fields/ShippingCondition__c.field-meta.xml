@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ShippingCondition__c</fullName>
+    <label>ShippingCondition</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1</fullName>
+                <default>false</default>
+                <label>OP Standard</label>
+            </value>
+            <value>
+                <fullName>2</fullName>
+                <default>false</default>
+                <label>OP Trading routes</label>
+            </value>
+            <value>
+                <fullName>3</fullName>
+                <default>false</default>
+                <label>OP Collect</label>
+            </value>
+            <value>
+                <fullName>4</fullName>
+                <default>false</default>
+                <label>GB-Non-autopick</label>
+            </value>
+            <value>
+                <fullName>5</fullName>
+                <default>false</default>
+                <label>OP Custom returns</label>
+            </value>
+            <value>
+                <fullName>6</fullName>
+                <default>false</default>
+                <label>OP Scrap Subco Stock</label>
+            </value>
+            <value>
+                <fullName>7</fullName>
+                <default>false</default>
+                <label>OP Express</label>
+            </value>
+            <value>
+                <fullName>BA</fullName>
+                <default>false</default>
+                <label>BE-VIA PERRIGO</label>
+            </value>
+            <value>
+                <fullName>BB</fullName>
+                <default>false</default>
+                <label>BE-FEBELCO</label>
+            </value>
+            <value>
+                <fullName>BC</fullName>
+                <default>false</default>
+                <label>BE-LIFE (OBSOLETE)</label>
+            </value>
+            <value>
+                <fullName>BD</fullName>
+                <default>false</default>
+                <label>BE-PHARMA BE</label>
+            </value>
+            <value>
+                <fullName>BE</fullName>
+                <default>false</default>
+                <label>BE-VARIOUS</label>
+            </value>
+            <value>
+                <fullName>BF</fullName>
+                <default>false</default>
+                <label>BE-ESCAPO (OBSOLETE)</label>
+            </value>
+            <value>
+                <fullName>BG</fullName>
+                <default>false</default>
+                <label>BE-CERP</label>
+            </value>
+            <value>
+                <fullName>BH</fullName>
+                <default>false</default>
+                <label>BE-HANFF</label>
+            </value>
+            <value>
+                <fullName>BI</fullName>
+                <default>false</default>
+                <label>BE-GOEDERT</label>
+            </value>
+            <value>
+                <fullName>BJ</fullName>
+                <default>false</default>
+                <label>BE-FEBELC-PDC(OBSOL)</label>
+            </value>
+            <value>
+                <fullName>BK</fullName>
+                <default>false</default>
+                <label>BE-CPL</label>
+            </value>
+            <value>
+                <fullName>BL</fullName>
+                <default>false</default>
+                <label>BE-Movianto(OBSOLETE)</label>
+            </value>
+            <value>
+                <fullName>BM</fullName>
+                <default>false</default>
+                <label>BE-Geodis</label>
+            </value>
+            <value>
+                <fullName>BN</fullName>
+                <default>false</default>
+                <label>BE-Geodis Collect</label>
+            </value>
+            <value>
+                <fullName>BO</fullName>
+                <default>false</default>
+                <label>BE-BELMEDIS</label>
+            </value>
+            <value>
+                <fullName>BP</fullName>
+                <default>false</default>
+                <label>BE LIV NO TEMP SPLIT</label>
+            </value>
+            <value>
+                <fullName>C1</fullName>
+                <default>false</default>
+                <label>CH-Non Mass Market</label>
+            </value>
+            <value>
+                <fullName>C2</fullName>
+                <default>false</default>
+                <label>CH-Mass Market</label>
+            </value>
+            <value>
+                <fullName>D1</fullName>
+                <default>false</default>
+                <label>DE-Mercareon</label>
+            </value>
+            <value>
+                <fullName>D2</fullName>
+                <default>false</default>
+                <label>DE-SPE</label>
+            </value>
+            <value>
+                <fullName>D3</fullName>
+                <default>false</default>
+                <label>DE-DHL</label>
+            </value>
+            <value>
+                <fullName>D4</fullName>
+                <default>false</default>
+                <label>DE-Parcel</label>
+            </value>
+            <value>
+                <fullName>D5</fullName>
+                <default>false</default>
+                <label>DE-Collect</label>
+            </value>
+            <value>
+                <fullName>DX</fullName>
+                <default>false</default>
+                <label>DE-LSP</label>
+            </value>
+            <value>
+                <fullName>F1</fullName>
+                <default>false</default>
+                <label>Pre Sales</label>
+            </value>
+            <value>
+                <fullName>F2</fullName>
+                <default>false</default>
+                <label>Dispute</label>
+            </value>
+            <value>
+                <fullName>F3</fullName>
+                <default>false</default>
+                <label>FR-C139 SSCCcustomer</label>
+            </value>
+            <value>
+                <fullName>G1</fullName>
+                <default>false</default>
+                <label>GB - MTO Direct cust</label>
+            </value>
+            <value>
+                <fullName>G2</fullName>
+                <default>false</default>
+                <label>GB - APAC customer</label>
+            </value>
+            <value>
+                <fullName>K1</fullName>
+                <default>false</default>
+                <label>OP-Consignm issue</label>
+            </value>
+            <value>
+                <fullName>NA</fullName>
+                <default>false</default>
+                <label>NL - Geodis</label>
+            </value>
+            <value>
+                <fullName>NB</fullName>
+                <default>false</default>
+                <label>NL - Geodis Collect</label>
+            </value>
+            <value>
+                <fullName>T1</fullName>
+                <default>false</default>
+                <label>OP TR - Repair</label>
+            </value>
+            <value>
+                <fullName>T2</fullName>
+                <default>false</default>
+                <label>OP TR - Retour</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

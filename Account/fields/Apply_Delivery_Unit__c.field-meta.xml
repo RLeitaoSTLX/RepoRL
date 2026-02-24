@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Apply_Delivery_Unit__c</fullName>
+    <defaultValue>true</defaultValue>
+    <inlineHelpText>If checked, Delivery Unit rule will get applied for this Customer (depends also on the Product and the type of Order Item).</inlineHelpText>
+    <label>Apply Delivery Unit</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

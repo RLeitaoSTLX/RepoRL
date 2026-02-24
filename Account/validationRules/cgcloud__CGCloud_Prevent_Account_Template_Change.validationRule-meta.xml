@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>cgcloud__CGCloud_Prevent_Account_Template_Change</fullName>
+    <active>true</active>
+    <description>The Account Template can&apos;t be edited after Customer creation.</description>
+    <errorConditionFormula>!ISBLANK(PRIORVALUE(cgcloud__Account_Template__c)) &amp;&amp; ISCHANGED(cgcloud__Account_Template__c)</errorConditionFormula>
+    <errorDisplayField>cgcloud__Account_Template__c</errorDisplayField>
+    <errorMessage>The Account Template can&apos;t be edited after Customer creation.</errorMessage>
+</ValidationRule>

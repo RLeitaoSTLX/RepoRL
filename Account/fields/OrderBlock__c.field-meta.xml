@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OrderBlock__c</fullName>
+    <label>Order Block</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>01</fullName>
+                <default>false</default>
+                <label>Insolvent</label>
+            </value>
+            <value>
+                <fullName>02</fullName>
+                <default>false</default>
+                <label>Payment difficulties</label>
+            </value>
+            <value>
+                <fullName>03</fullName>
+                <default>false</default>
+                <label>Out of business</label>
+            </value>
+            <value>
+                <fullName>96</fullName>
+                <default>false</default>
+                <label>Annual Deact. Review</label>
+            </value>
+            <value>
+                <fullName>98</fullName>
+                <default>false</default>
+                <label>Tr. Ord. Bl. (temp.)</label>
+            </value>
+            <value>
+                <fullName>99</fullName>
+                <default>false</default>
+                <label>General Block</label>
+            </value>
+            <value>
+                <fullName>91</fullName>
+                <default>false</default>
+                <label>Closed for bankruptcy</label>
+            </value>
+            <value>
+                <fullName>92</fullName>
+                <default>false</default>
+                <label>Blocked for injunction</label>
+            </value>
+            <value>
+                <fullName>93</fullName>
+                <default>false</default>
+                <label>Blocked because legal practice</label>
+            </value>
+            <value>
+                <fullName>94</fullName>
+                <default>false</default>
+                <label>Blocked for Write Off</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

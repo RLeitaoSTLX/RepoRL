@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VisitPerformance__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+    (
+(VisitFrequency__r.RequiredNumberOfVisitsPerYear__c - NumberOfVisitsDoneInCY__c) /(365
+-
+((TODAY() - DATE(YEAR(TODAY()), 1, 1) + 1))
+) &lt;= (VisitFrequency__r.RequiredNumberOfVisitsPerYear__c / 365)),
+IMAGE(&apos;/resource/GreenImage&apos;, &quot;GREEN&quot;, 10, 10),
+IMAGE(&apos;/resource/RedImage&apos;, &quot;RED&quot;, 10, 10)
+)</formula>
+    <label>Visit Performance</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>cgcloud__Avoid_Change_External_ID</fullName>
+    <active>true</active>
+    <description>You cannot modify the ExternalId once it has an existent value.</description>
+    <errorConditionFormula>AND ( 
+ISCHANGED(cgcloud__ExternalId__c), 
+NOT(ISBLANK(PRIORVALUE(cgcloud__ExternalId__c))) 
+)</errorConditionFormula>
+    <errorDisplayField>cgcloud__ExternalId__c</errorDisplayField>
+    <errorMessage>The ExternalId can&apos;t be edited after Customer creation.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DeliveringPlant__c</fullName>
+    <label>Delivering plant</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1</fullName>
+                <default>false</default>
+                <label>Plant 0001</label>
+            </value>
+            <value>
+                <fullName>001A</fullName>
+                <default>false</default>
+                <label>Perrigo Holding NV</label>
+            </value>
+            <value>
+                <fullName>002A</fullName>
+                <default>false</default>
+                <label>Belgian Cycling Company</label>
+            </value>
+            <value>
+                <fullName>005A</fullName>
+                <default>false</default>
+                <label>Omega Pharma Belgium</label>
+            </value>
+            <value>
+                <fullName>040A</fullName>
+                <default>false</default>
+                <label>Samenwerkende Apothekers Neder</label>
+            </value>
+            <value>
+                <fullName>049A</fullName>
+                <default>false</default>
+                <label>Omega Pharma Trading NV (BE)</label>
+            </value>
+            <value>
+                <fullName>049B</fullName>
+                <default>false</default>
+                <label>Omega Pharma Trading NV (BG)</label>
+            </value>
+            <value>
+                <fullName>052A</fullName>
+                <default>false</default>
+                <label>Omega Pharma Capital</label>
+            </value>
+            <value>
+                <fullName>059A</fullName>
+                <default>false</default>
+                <label>Medgenix Benelux NV</label>
+            </value>
+            <value>
+                <fullName>071A</fullName>
+                <default>false</default>
+                <label>Perrigo Pharma Holding NL</label>
+            </value>
+            <value>
+                <fullName>072A</fullName>
+                <default>false</default>
+                <label>P-Direct NL B.V.</label>
+            </value>
+            <value>
+                <fullName>072B</fullName>
+                <default>false</default>
+                <label>P-Direct NL B.V. (DE)</label>
+            </value>
+            <value>
+                <fullName>074A</fullName>
+                <default>false</default>
+                <label>Omega Pharma Nederland BV</label>
+            </value>
+            <value>
+                <fullName>075A</fullName>
+                <default>false</default>
+                <label>Perrigo DE - Dachser</label>
+            </value>
+            <value>
+                <fullName>075B</fullName>
+                <default>false</default>
+                <label>Perrigo DE- Nextph</label>
+            </value>
+            <value>
+                <fullName>075C</fullName>
+                <default>false</default>
+                <label>Perrigo DE - Office</label>
+            </value>
+            <value>
+                <fullName>077A</fullName>
+                <default>false</default>
+                <label>Chefaro Ireland DAC</label>
+            </value>
+            <value>
+                <fullName>077B</fullName>
+                <default>false</default>
+                <label>*Chefaro IR Ltd (BE)</label>
+            </value>
+            <value>
+                <fullName>077C</fullName>
+                <default>false</default>
+                <label>*Chefaro Ireland Ltd (FR)</label>
+            </value>
+            <value>
+                <fullName>077D</fullName>
+                <default>false</default>
+                <label>*Chefaro Ireland Ltd (DE)</label>
+            </value>
+            <value>
+                <fullName>077E</fullName>
+                <default>false</default>
+                <label>*Chefaro Ireland Ltd (NL)</label>
+            </value>
+            <value>
+                <fullName>078A</fullName>
+                <default>false</default>
+                <label>Perrigo Spain</label>
+            </value>
+            <value>
+                <fullName>079A</fullName>
+                <default>false</default>
+                <label>Omega Pharma LTD</label>
+            </value>
+            <value>
+                <fullName>079B</fullName>
+                <default>false</default>
+                <label>*Chefaro UK LTD (DE)</label>
+            </value>
+            <value>
+                <fullName>079C</fullName>
+                <default>false</default>
+                <label>Omega Pharma LTD (SK)</label>
+            </value>
+            <value>
+                <fullName>114A</fullName>
+                <default>false</default>
+                <label>Biover nv</label>
+            </value>
+            <value>
+                <fullName>117A</fullName>
+                <default>false</default>
+                <label>OMEGA PHARMA HELLAS SA</label>
+            </value>
+            <value>
+                <fullName>139A</fullName>
+                <default>false</default>
+                <label>Cosmediet-Biotechnie SAS</label>
+            </value>
+            <value>
+                <fullName>148A</fullName>
+                <default>false</default>
+                <label>Wartner Europe BV</label>
+            </value>
+            <value>
+                <fullName>149A</fullName>
+                <default>false</default>
+                <label>Omega Teknika Ireland Ltd</label>
+            </value>
+            <value>
+                <fullName>152A</fullName>
+                <default>false</default>
+                <label>Omega Allpharm Cyprus LTD</label>
+            </value>
+            <value>
+                <fullName>159A</fullName>
+                <default>false</default>
+                <label>HUD SA</label>
+            </value>
+            <value>
+                <fullName>161A</fullName>
+                <default>false</default>
+                <label>ACO HUD NORDIC AB - DHL</label>
+            </value>
+            <value>
+                <fullName>161B</fullName>
+                <default>false</default>
+                <label>ACO HUD NORDIC AB - Tamro</label>
+            </value>
+            <value>
+                <fullName>161C</fullName>
+                <default>false</default>
+                <label>The Hut Group - PL</label>
+            </value>
+            <value>
+                <fullName>161D</fullName>
+                <default>false</default>
+                <label>The Hut Group - UK</label>
+            </value>
+            <value>
+                <fullName>162A</fullName>
+                <default>false</default>
+                <label>Omega Pharma Nordic AB</label>
+            </value>
+            <value>
+                <fullName>165A</fullName>
+                <default>false</default>
+                <label>ACO HUD NORGE A/S</label>
+            </value>
+            <value>
+                <fullName>167A</fullName>
+                <default>false</default>
+                <label>OMEGA ACO A/S</label>
+            </value>
+            <value>
+                <fullName>169A</fullName>
+                <default>false</default>
+                <label>ACO PHARMA OY</label>
+            </value>
+            <value>
+                <fullName>172A</fullName>
+                <default>false</default>
+                <label>LABO PERRIGO FR Paris</label>
+            </value>
+            <value>
+                <fullName>172B</fullName>
+                <default>false</default>
+                <label>*LABO OP FRANCE SAS Plélo</label>
+            </value>
+            <value>
+                <fullName>172C</fullName>
+                <default>false</default>
+                <label>*LABO OP FRANCE SAS Largentièr</label>
+            </value>
+            <value>
+                <fullName>172D</fullName>
+                <default>false</default>
+                <label>Prévoté FRANCE Méru</label>
+            </value>
+            <value>
+                <fullName>175A</fullName>
+                <default>false</default>
+                <label>*Damianus t/a Omega Teknika</label>
+            </value>
+            <value>
+                <fullName>176A</fullName>
+                <default>false</default>
+                <label>Via Natura NV_BE</label>
+            </value>
+            <value>
+                <fullName>176B</fullName>
+                <default>false</default>
+                <label>Via Natura NV_ES</label>
+            </value>
+            <value>
+                <fullName>178A</fullName>
+                <default>false</default>
+                <label>Bional Nederland BV</label>
+            </value>
+            <value>
+                <fullName>180A</fullName>
+                <default>false</default>
+                <label>Bional International BV</label>
+            </value>
+            <value>
+                <fullName>183A</fullName>
+                <default>false</default>
+                <label>Omega Pharma Luxemburg SARL</label>
+            </value>
+            <value>
+                <fullName>185A</fullName>
+                <default>false</default>
+                <label>Richard Bittner AG</label>
+            </value>
+            <value>
+                <fullName>185B</fullName>
+                <default>false</default>
+                <label>Richard Bittner AG-Baltics</label>
+            </value>
+            <value>
+                <fullName>185C</fullName>
+                <default>false</default>
+                <label>Richard Bittner AG-Ukraine</label>
+            </value>
+            <value>
+                <fullName>185D</fullName>
+                <default>false</default>
+                <label>Richard Bittner AG-Germany</label>
+            </value>
+            <value>
+                <fullName>186A</fullName>
+                <default>false</default>
+                <label>Herbs Trading Gmbh</label>
+            </value>
+            <value>
+                <fullName>186B</fullName>
+                <default>false</default>
+                <label>Herbs Trading Gmbh-Ukraine</label>
+            </value>
+            <value>
+                <fullName>188A</fullName>
+                <default>false</default>
+                <label>Perrigo Poland</label>
+            </value>
+            <value>
+                <fullName>188B</fullName>
+                <default>false</default>
+                <label>Perrigo Poland - Baltics</label>
+            </value>
+            <value>
+                <fullName>196A</fullName>
+                <default>false</default>
+                <label>JLR Pharma SA</label>
+            </value>
+            <value>
+                <fullName>197A</fullName>
+                <default>false</default>
+                <label>Perrigo Schweiz AG</label>
+            </value>
+            <value>
+                <fullName>207A</fullName>
+                <default>false</default>
+                <label>Raben Logistics Czech s.r.o.</label>
+            </value>
+            <value>
+                <fullName>207B</fullName>
+                <default>false</default>
+                <label>Alliance Healthcare CZ s.r.o.</label>
+            </value>
+            <value>
+                <fullName>207C</fullName>
+                <default>false</default>
+                <label>Omega Pharma a.s.</label>
+            </value>
+            <value>
+                <fullName>207D</fullName>
+                <default>false</default>
+                <label>Omega Pharma a.s - SK</label>
+            </value>
+            <value>
+                <fullName>208A</fullName>
+                <default>false</default>
+                <label>Raben Logistics Slovakia s.r.o</label>
+            </value>
+            <value>
+                <fullName>208B</fullName>
+                <default>false</default>
+                <label>Alliance Healthcare SK s.r.o</label>
+            </value>
+            <value>
+                <fullName>208C</fullName>
+                <default>false</default>
+                <label>Omega Pharma s.r.o.</label>
+            </value>
+            <value>
+                <fullName>211A</fullName>
+                <default>false</default>
+                <label>OP International - BE</label>
+            </value>
+            <value>
+                <fullName>211B</fullName>
+                <default>false</default>
+                <label>OP International - DE</label>
+            </value>
+            <value>
+                <fullName>211C</fullName>
+                <default>false</default>
+                <label>OP International - CH</label>
+            </value>
+            <value>
+                <fullName>211D</fullName>
+                <default>false</default>
+                <label>OP International - PL</label>
+            </value>
+            <value>
+                <fullName>211E</fullName>
+                <default>false</default>
+                <label>OP International - RO</label>
+            </value>
+            <value>
+                <fullName>211F</fullName>
+                <default>false</default>
+                <label>OP International - PT</label>
+            </value>
+            <value>
+                <fullName>211G</fullName>
+                <default>false</default>
+                <label>OP International - GB</label>
+            </value>
+            <value>
+                <fullName>211H</fullName>
+                <default>false</default>
+                <label>OP International - IE</label>
+            </value>
+            <value>
+                <fullName>211I</fullName>
+                <default>false</default>
+                <label>OP International - ES</label>
+            </value>
+            <value>
+                <fullName>211J</fullName>
+                <default>false</default>
+                <label>OP International - NL</label>
+            </value>
+            <value>
+                <fullName>211K</fullName>
+                <default>false</default>
+                <label>OP International - HU</label>
+            </value>
+            <value>
+                <fullName>211L</fullName>
+                <default>false</default>
+                <label>OP International - AT</label>
+            </value>
+            <value>
+                <fullName>211M</fullName>
+                <default>false</default>
+                <label>OP International - BG</label>
+            </value>
+            <value>
+                <fullName>211N</fullName>
+                <default>false</default>
+                <label>OP International - FR</label>
+            </value>
+            <value>
+                <fullName>212A</fullName>
+                <default>false</default>
+                <label>*Jaico R.D.P NV</label>
+            </value>
+            <value>
+                <fullName>219A</fullName>
+                <default>false</default>
+                <label>PERRİGO KİŞİSEL</label>
+            </value>
+            <value>
+                <fullName>224A</fullName>
+                <default>false</default>
+                <label>Adriamedic SA</label>
+            </value>
+            <value>
+                <fullName>227A</fullName>
+                <default>false</default>
+                <label>«PERRIGO UKRAINE» LLC</label>
+            </value>
+            <value>
+                <fullName>230A</fullName>
+                <default>false</default>
+                <label>OP Innovation &amp; Development</label>
+            </value>
+            <value>
+                <fullName>233A</fullName>
+                <default>false</default>
+                <label>Omega Pharma Manufacturing</label>
+            </value>
+            <value>
+                <fullName>233B</fullName>
+                <default>false</default>
+                <label>Omega Pharma Manufacturing -HU</label>
+            </value>
+            <value>
+                <fullName>234A</fullName>
+                <default>false</default>
+                <label>OP Manufacturing Verwaltungs</label>
+            </value>
+            <value>
+                <fullName>235A</fullName>
+                <default>false</default>
+                <label>Abtei OP Pharma GmbH</label>
+            </value>
+            <value>
+                <fullName>239A</fullName>
+                <default>false</default>
+                <label>Omega Pharma IP Limited</label>
+            </value>
+            <value>
+                <fullName>239B</fullName>
+                <default>false</default>
+                <label>Omega Pharma Ireland Ltd (LU)</label>
+            </value>
+            <value>
+                <fullName>240A</fullName>
+                <default>false</default>
+                <label>Perrigo AT</label>
+            </value>
+            <value>
+                <fullName>241A</fullName>
+                <default>false</default>
+                <label>Perrigo Belgium Holding 1 NV</label>
+            </value>
+            <value>
+                <fullName>241B</fullName>
+                <default>false</default>
+                <label>*S&amp;H - Etixx NL</label>
+            </value>
+            <value>
+                <fullName>241C</fullName>
+                <default>false</default>
+                <label>*Eitxx UK</label>
+            </value>
+            <value>
+                <fullName>243A</fullName>
+                <default>false</default>
+                <label>*Insect Repellents B.V.</label>
+            </value>
+            <value>
+                <fullName>244A</fullName>
+                <default>false</default>
+                <label>Ymea BV</label>
+            </value>
+            <value>
+                <fullName>245A</fullName>
+                <default>false</default>
+                <label>OCE BIO BV</label>
+            </value>
+            <value>
+                <fullName>246A</fullName>
+                <default>false</default>
+                <label>OCE BIO NEDERLAND BV</label>
+            </value>
+            <value>
+                <fullName>246B</fullName>
+                <default>false</default>
+                <label>OCE BIO NEDERLAND BV - DE</label>
+            </value>
+            <value>
+                <fullName>254C</fullName>
+                <default>false</default>
+                <label>Naturwohl Pharma GmbH – Office</label>
+            </value>
+            <value>
+                <fullName>254D</fullName>
+                <default>false</default>
+                <label>Naturwohl Pharma Gmb - Dachser</label>
+            </value>
+            <value>
+                <fullName>257A</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (BE)</label>
+            </value>
+            <value>
+                <fullName>257B</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (DE)</label>
+            </value>
+            <value>
+                <fullName>257C</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (CH)</label>
+            </value>
+            <value>
+                <fullName>257D</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (PL)</label>
+            </value>
+            <value>
+                <fullName>257E</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (RO)</label>
+            </value>
+            <value>
+                <fullName>257G</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (GB)</label>
+            </value>
+            <value>
+                <fullName>257H</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (IE)</label>
+            </value>
+            <value>
+                <fullName>257I</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (ES)</label>
+            </value>
+            <value>
+                <fullName>257J</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (NL)</label>
+            </value>
+            <value>
+                <fullName>257K</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (HU)</label>
+            </value>
+            <value>
+                <fullName>257L</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (AT)</label>
+            </value>
+            <value>
+                <fullName>257M</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (BG)</label>
+            </value>
+            <value>
+                <fullName>257N</fullName>
+                <default>false</default>
+                <label>Perrigo SCI DAC (FR)</label>
+            </value>
+            <value>
+                <fullName>800A</fullName>
+                <default>false</default>
+                <label>Perrigo Australia Balcatta WA</label>
+            </value>
+            <value>
+                <fullName>800B</fullName>
+                <default>false</default>
+                <label>Perrigo Australia C/- Linfox H</label>
+            </value>
+            <value>
+                <fullName>800C</fullName>
+                <default>false</default>
+                <label>Perrigo Australia Belrose NSW</label>
+            </value>
+            <value>
+                <fullName>800D</fullName>
+                <default>false</default>
+                <label>Healthcare Logistics</label>
+            </value>
+            <value>
+                <fullName>801A</fullName>
+                <default>false</default>
+                <label>Perrigo New Zealand</label>
+            </value>
+            <value>
+                <fullName>810A</fullName>
+                <default>false</default>
+                <label>Solent Dental HK</label>
+            </value>
+            <value>
+                <fullName>900A</fullName>
+                <default>false</default>
+                <label>Perrigo Europe Invest NV</label>
+            </value>
+            <value>
+                <fullName>C049</fullName>
+                <default>false</default>
+                <label>*Omega Pharma Trading</label>
+            </value>
+            <value>
+                <fullName>C188</fullName>
+                <default>false</default>
+                <label>*Perrigo Poland - DO NOT USE</label>
+            </value>
+            <value>
+                <fullName>C223</fullName>
+                <default>false</default>
+                <label>Bittner Pharma LLC</label>
+            </value>
+            <value>
+                <fullName>155A</fullName>
+                <default>false</default>
+                <label>Perrigo Italia Srl</label>
+            </value>
+            <value>
+                <fullName>088A</fullName>
+                <default>false</default>
+                <label>Perrigo Portugal</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
