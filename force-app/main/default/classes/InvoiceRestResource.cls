@@ -1,5 +1,34 @@
+/**
+ * Public REST API for Invoice__c records.
+ *
+ * Base URI: /services/apexrest/invoices/
+ *   GET  /services/apexrest/invoices/{invoiceId}  -> fetch a single Invoice
+ *   POST /services/apexrest/invoices/            -> create a single Invoice
+ *
+ * Design notes:
+ * - Every response, success or failure, uses the same ApiResponse envelope so
+ *   clients can parse one shape instead of branching on the HTTP status first.
+ * - `global` is required by @RestResource; `with sharing` means record-level
+ *   sharing rules apply to the caller, so this endpoint cannot be used to read
+ *   Invoices the running user would not see in the UI.
+ * - CRUD/FLS is enforced explicitly rather than relying on sharing alone:
+ *   describe checks up front, WITH SECURITY_ENFORCED on read, and
+ *   Security.stripInaccessible on create.
+ * - Status__c values accepted here mirror the transitions in InvoiceService
+ *   (Draft -> Submitted -> Approved). Creating an Invoice directly as
+ *   'Approved' bypasses those transitions, which is why the Account__c
+ *   requirement is validated here instead of being assumed upstream.
+ *
+ * @see InvoiceService for the status transition logic
+ * @see InvoiceRestResourceTest for coverage
+ */
 @RestResource(urlMapping='/invoices/*')
 global with sharing class InvoiceRestResource {
+    /**
+     * A single machine-readable error. `field` names the offending request
+     * field (null for errors that are not field-specific) and `code` is a
+     * stable identifier clients can switch on without parsing `message`.
+     */
     global class ErrorItem {
         public String message;
         public String field;
@@ -14,6 +43,11 @@ global with sharing class InvoiceRestResource {
         }
     }
 
+    /**
+     * Uniform response envelope. On success `data` carries the payload and
+     * `errors` is omitted from the JSON (null fields are dropped by
+     * JSON.serialize); on failure `data` is null and `errors` is populated.
+     */
     global class ApiResponse {
         public Boolean success;
         public Object data;
@@ -29,6 +63,14 @@ global with sharing class InvoiceRestResource {
         }
     }
 
+    /**
+     * Expected POST body. Field names are the JSON keys clients send.
+     *
+     * All four are optional: a body of `{}` creates an Invoice with Status__c
+     * defaulted to 'Draft' and no Amount__c set. Note that `accountId` is typed
+     * as Id, so a syntactically invalid Id string fails during JSON.deserialize
+     * and surfaces as INVALID_JSON rather than reaching field validation.
+     */
     global class CreateInvoiceRequest {
         public Decimal amount;
         public String status;
@@ -36,6 +78,20 @@ global with sharing class InvoiceRestResource {
         public String name;
     }
 
+    /**
+     * GET /services/apexrest/invoices/{invoiceId}
+     *
+     * Returns the Invoice as `data` on success. Status codes:
+     *   200 found
+     *   400 no Id in the URI (MISSING_ID) or not a well-formed Id (INVALID_ID)
+     *   403 no object access (NO_ACCESS) or FLS blocked a selected field
+     *   404 Id is valid but no row is visible to the caller (NOT_FOUND)
+     *   500 anything else (SERVER_ERROR)
+     *
+     * Because sharing is enforced, a record the caller cannot see is
+     * indistinguishable from one that does not exist — both return 404. That is
+     * deliberate: it avoids leaking the existence of records via status codes.
+     */
     @HttpGet
     global static void doGet() {
         RestRequest req = RestContext.request;
@@ -49,6 +105,8 @@ global with sharing class InvoiceRestResource {
             return;
         }
 
+        // Cast before querying: an Id-shaped bind variable avoids handing
+        // arbitrary caller input to SOQL and gives a clean 400 for junk input.
         Id invoiceId;
         try {
             invoiceId = (Id)idStr;
@@ -76,6 +134,12 @@ global with sharing class InvoiceRestResource {
             ];
             writeJson(res, 200, new ApiResponse(true, inv));
         } catch (QueryException qe) {
+            // A single-row assignment throws QueryException for two very
+            // different reasons: no rows, or WITH SECURITY_ENFORCED rejecting a
+            // field. The message is the only thing separating them here.
+            // NOTE: matching on 'List has no rows' is fragile — the platform
+            // message text is not a contract. Selecting into a List and
+            // checking isEmpty() would distinguish the cases structurally.
             if (String.valueOf(qe.getMessage()).contains('List has no rows')) {
                 writeJson(res, 404, new ApiResponse(false, null, new List<ErrorItem>{
                     new ErrorItem('Invoice não encontrado.', 'id', 'NOT_FOUND')
@@ -94,6 +158,23 @@ global with sharing class InvoiceRestResource {
         }
     }
 
+    /**
+     * POST /services/apexrest/invoices/
+     *
+     * Creates one Invoice from a CreateInvoiceRequest body. On success returns
+     * 201 with `{ id, status }` and a Location header pointing at the GET URI.
+     *
+     * Status codes:
+     *   201 created
+     *   400 missing body (MISSING_BODY), unparseable body (INVALID_JSON),
+     *       or the insert was rejected by the platform (DML_ERROR)
+     *   403 no create access on the object, or FLS blocked a supplied field
+     *   422 the body parsed but failed business validation (see validateCreate)
+     *   500 anything else (SERVER_ERROR)
+     *
+     * 400 vs 422 is the usual split: 400 means "I could not read this request",
+     * 422 means "I read it and the values are not acceptable".
+     */
     @HttpPost
     global static void doPost() {
         RestRequest req = RestContext.request;
@@ -130,6 +211,8 @@ global with sharing class InvoiceRestResource {
             return;
         }
 
+        // Map only the fields the client actually supplied, so unset fields keep
+        // whatever default the org has configured rather than being nulled out.
         Invoice__c inv = new Invoice__c();
         if (input != null) {
             if (input.amount != null) {
@@ -140,12 +223,20 @@ global with sharing class InvoiceRestResource {
                 inv.Account__c = input.accountId;
             }
 
+            // Name is only set when the caller sent one AND the field is
+            // writable — an Auto Number Name is not createable, and assigning
+            // to it would throw at insert time.
             if (!String.isBlank(input.name) && Invoice__c.Name.getDescribe().isCreateable()) {
                 inv.Name = input.name;
             }
         }
 
         // Enforce FLS for fields being set. If the user attempted to set fields they can't create, fail with 403.
+        //
+        // stripInaccessible normally *silently removes* fields the caller cannot
+        // write. That silence is wrong for an API: the client would get a 201
+        // and assume its Amount__c was saved. So we inspect getRemovedFields()
+        // and reject the whole request instead, naming the offending fields.
         SObjectAccessDecision decision = Security.stripInaccessible(AccessType.CREATABLE, new List<SObject>{ inv });
         List<String> removedFieldNames = new List<String>();
         if (decision != null) {
@@ -164,6 +255,9 @@ global with sharing class InvoiceRestResource {
         }
 
         try {
+            // allOrNone = false: validation rules, required fields and triggers
+            // come back as a SaveResult we can translate into a 400, instead of
+            // a DmlException that would land in the generic 500 handler.
             Database.SaveResult sr = Database.insert(inv, false);
             if (!sr.isSuccess()) {
                 String msg = (sr.getErrors() != null && !sr.getErrors().isEmpty())
@@ -188,6 +282,21 @@ global with sharing class InvoiceRestResource {
         }
     }
 
+    /**
+     * Business validation for a create request. Collects *all* problems rather
+     * than returning on the first, so a client fixes one round trip's worth of
+     * mistakes at a time.
+     *
+     * Rules:
+     * - Amount__c may be omitted or zero, but not negative.
+     * - Status__c defaults to 'Draft' and must be one of the three known values.
+     * - Approved invoices must name an Account, and that Id must actually be an
+     *   Account (a valid Id of the wrong SObject type is rejected).
+     *
+     * @param input deserialized body; null-safe (a null input is valid and
+     *              produces a Draft Invoice)
+     * @return zero or more ErrorItems; empty means the request is acceptable
+     */
     private static List<ErrorItem> validateCreate(CreateInvoiceRequest input) {
         List<ErrorItem> errors = new List<ErrorItem>();
 
@@ -202,6 +311,9 @@ global with sharing class InvoiceRestResource {
         }
 
         // Keep status values aligned with InvoiceService transitions + trigger rule.
+        // Hardcoded rather than read from the picklist describe: it keeps this in
+        // lockstep with InvoiceService's constants, at the cost of needing an
+        // edit here if the picklist gains a value.
         Set<String> allowed = new Set<String>{ 'Draft', 'Submitted', 'Approved' };
         if (!allowed.contains(status)) {
             errors.add(new ErrorItem('Status inválido. Use Draft, Submitted ou Approved.', 'status', 'INVALID_STATUS'));
@@ -225,6 +337,11 @@ global with sharing class InvoiceRestResource {
         return errors;
     }
 
+    /**
+     * Single exit point for writing a response: sets the status, the JSON
+     * content type and the serialized body together, so no code path can
+     * accidentally return a body without a content type or vice versa.
+     */
     private static void writeJson(RestResponse res, Integer statusCode, Object payload) {
         if (res == null) {
             return;
@@ -234,6 +351,19 @@ global with sharing class InvoiceRestResource {
         res.responseBody = Blob.valueOf(JSON.serialize(payload));
     }
 
+    /**
+     * Pulls the last path segment out of the request URI, since urlMapping
+     * '/invoices/*' captures the Id as part of the path rather than as a
+     * parameter.
+     *
+     * Tolerates a query string and any number of trailing slashes, so all of
+     * these yield the same Id:
+     *   /services/apexrest/invoices/a01xx0000000001
+     *   /services/apexrest/invoices/a01xx0000000001/
+     *   /services/apexrest/invoices/a01xx0000000001?debug=1
+     *
+     * @return the last segment, or null if the URI carries no Id
+     */
     private static String extractIdFromUri(String uri) {
         if (String.isBlank(uri)) {
             return null;
