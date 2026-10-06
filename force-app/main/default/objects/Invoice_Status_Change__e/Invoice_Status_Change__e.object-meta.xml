@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Published by InvoiceStatusChangeEventPublisher when Invoice__c.Status__c changes; consumed by the InvoiceStatusChangeSubscriber trigger.</description>
+    <eventType>HighVolume</eventType>
+    <label>Invoice Status Change</label>
+    <pluralLabel>Invoice Status Changes</pluralLabel>
+    <publishBehavior>PublishAfterCommit</publishBehavior>
+</CustomObject>
