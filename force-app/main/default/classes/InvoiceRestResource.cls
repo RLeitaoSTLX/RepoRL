@@ -227,7 +227,9 @@ global with sharing class InvoiceRestResource {
             // writable — an Auto Number Name is not createable, and assigning
             // to it would throw at insert time.
             if (!String.isBlank(input.name) && Invoice__c.Name.getDescribe().isCreateable()) {
-                inv.Name = input.name;
+                // put() rather than inv.Name: a direct assignment to an Auto
+                // Number Name does not compile.
+                inv.put('Name', input.name);
             }
         }
 
@@ -240,10 +242,11 @@ global with sharing class InvoiceRestResource {
         SObjectAccessDecision decision = Security.stripInaccessible(AccessType.CREATABLE, new List<SObject>{ inv });
         List<String> removedFieldNames = new List<String>();
         if (decision != null) {
-            List<SObjectField> removed = decision.getRemovedFields();
-            if (removed != null && !removed.isEmpty()) {
-                for (SObjectField f : removed) {
-                    removedFieldNames.add(String.valueOf(f));
+            // getRemovedFields() is keyed by SObject API name -> removed field names.
+            Map<String, Set<String>> removed = decision.getRemovedFields();
+            if (removed != null) {
+                for (Set<String> fieldNames : removed.values()) {
+                    removedFieldNames.addAll(new List<String>(fieldNames));
                 }
             }
         }

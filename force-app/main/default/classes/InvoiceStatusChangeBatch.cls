@@ -29,26 +29,26 @@ public with sharing class InvoiceStatusChangeBatch implements Database.Batchable
     }
 
     private class IdIterable implements Iterable<Id> {
-        private final List<Id> inner;
-        IdIterable(List<Id> inner) {
-            this.inner = inner == null ? new List<Id>() : inner;
+        private final List<Id> items;
+        IdIterable(List<Id> items) {
+            this.items = items == null ? new List<Id>() : items;
         }
         public Iterator<Id> iterator() {
-            return new IdIterator(inner);
+            return new IdIterator(items);
         }
     }
 
     private class IdIterator implements Iterator<Id> {
-        private final List<Id> inner;
+        private final List<Id> items;
         private Integer idx = 0;
-        IdIterator(List<Id> inner) {
-            this.inner = inner == null ? new List<Id>() : inner;
+        IdIterator(List<Id> items) {
+            this.items = items == null ? new List<Id>() : items;
         }
         public Boolean hasNext() {
-            return idx < inner.size();
+            return idx < items.size();
         }
         public Id next() {
-            return inner[idx++];
+            return items[idx++];
         }
     }
 }

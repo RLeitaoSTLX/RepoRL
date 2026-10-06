@@ -8,15 +8,20 @@ public with sharing class InvoiceTriggerHandler {
         }
         executedContexts.add(ctx);
 
+        // Trigger.new / Trigger.oldMap are typed as generic SObject collections;
+        // a Map<Id, SObject> does not implicitly convert to Map<Id, Invoice__c>.
+        List<Invoice__c> newList = (List<Invoice__c>)Trigger.new;
+        Map<Id, Invoice__c> oldMap = (Map<Id, Invoice__c>)Trigger.oldMap;
+
         if (Trigger.isBefore) {
             if (Trigger.isInsert) {
-                beforeInsert(Trigger.new);
+                beforeInsert(newList);
             } else if (Trigger.isUpdate) {
-                beforeUpdate(Trigger.new, Trigger.oldMap);
+                beforeUpdate(newList, oldMap);
             }
         } else if (Trigger.isAfter) {
             if (Trigger.isUpdate) {
-                afterUpdate(Trigger.new, Trigger.oldMap);
+                afterUpdate(newList, oldMap);
             }
         }
     }

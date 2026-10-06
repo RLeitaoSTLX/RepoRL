@@ -3,7 +3,7 @@ private class InvoiceRestResourceTest {
     private static Invoice__c makeInvoice(String status, Decimal amount, Id accountId) {
         Invoice__c inv = new Invoice__c();
         if (Invoice__c.Name.getDescribe().isCreateable()) {
-            inv.Name = 'Test Invoice';
+            inv.put('Name', 'Test Invoice');
         }
         inv.Status__c = String.isBlank(status) ? 'Draft' : status;
         inv.Amount__c = amount;

@@ -28,7 +28,11 @@ public with sharing class InvoiceStatusChangeAsyncDispatcher {
 
         for (Integer startIdx = 0; startIdx < total; startIdx += MAX_CHANGES_PER_QUEUEABLE) {
             Integer endIdxExclusive = Math.min(startIdx + MAX_CHANGES_PER_QUEUEABLE, total);
-            List<InvoiceStatusChangeQueueable.Change> slice = changes.subList(startIdx, endIdxExclusive);
+            // Apex List has no subList(), so copy the slice manually.
+            List<InvoiceStatusChangeQueueable.Change> slice = new List<InvoiceStatusChangeQueueable.Change>();
+            for (Integer i = startIdx; i < endIdxExclusive; i++) {
+                slice.add(changes[i]);
+            }
             System.enqueueJob(new InvoiceStatusChangeQueueable(slice));
         }
     }
