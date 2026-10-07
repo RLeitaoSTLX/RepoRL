@@ -12,7 +12,35 @@
         <apexClass>InvoiceService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-    <description>Read, create and edit Invoices, publish/read Invoice Status Change events, call the Invoice REST API, and see the Invoice Management app and Invoices tab.</description>
+    <classAccesses>
+        <apexClass>InvoiceStatusChangeAsyncDispatcher</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvoiceStatusChangeBatch</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvoiceStatusChangeEventPublisher</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvoiceStatusChangeProcessor</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvoiceStatusChangeQueueable</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvoiceStatusChangeSubscriberHandler</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvoiceTriggerHandler</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>Full access to the Invoice solution: Invoice Management app, Invoices tab, Invoice__c (read/create/edit) and its fields, Invoice Status Change events, and all Invoice Apex classes.</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>Invoice__c.Account__c</field>
