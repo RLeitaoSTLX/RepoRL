@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Read, create and edit Invoices, publish/read Invoice Status Change events, and call the Invoice REST API.</description>
-    <hasActivationRequired>false</hasActivationRequired>
-    <label>Invoice Access</label>
+    <applicationVisibilities>
+        <application>Invoice_Management</application>
+        <visible>true</visible>
+    </applicationVisibilities>
     <classAccesses>
         <apexClass>InvoiceRestResource</apexClass>
         <enabled>true</enabled>
@@ -11,6 +12,7 @@
         <apexClass>InvoiceService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <description>Read, create and edit Invoices, publish/read Invoice Status Change events, call the Invoice REST API, and see the Invoice Management app and Invoices tab.</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>Invoice__c.Account__c</field>
@@ -26,6 +28,8 @@
         <field>Invoice__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Invoice Access</label>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>false</allowDelete>
@@ -44,4 +48,8 @@
         <object>Invoice_Status_Change__e</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+    <tabSettings>
+        <tab>Invoice__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
 </PermissionSet>
