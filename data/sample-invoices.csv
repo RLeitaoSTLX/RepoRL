@@ -1,0 +1,15 @@
+Status__c,Amount__c,Account__c
+Draft,1250.00,
+Draft,0.00,
+Draft,480.50,ACCOUNT_01_ID
+Draft,9900.00,ACCOUNT_03_ID
+Submitted,3200.00,ACCOUNT_01_ID
+Submitted,150.75,ACCOUNT_02_ID
+Submitted,7800.00,ACCOUNT_04_ID
+Submitted,2100.00,
+Approved,5600.00,ACCOUNT_01_ID
+Approved,12000.00,ACCOUNT_02_ID
+Approved,845.20,ACCOUNT_03_ID
+Approved,4300.00,ACCOUNT_04_ID
+Approved,18999.99,ACCOUNT_05_ID
+Approved,640.00,ACCOUNT_05_ID
